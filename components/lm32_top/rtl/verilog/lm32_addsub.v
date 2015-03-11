@@ -86,29 +86,12 @@ wire   Cout;
 ///////////////////////////////////////////////////// 
 
        generate
-	  if (`LATTICE_FAMILY == "SC" || `LATTICE_FAMILY == "SCM") begin
 	     wire [32:0] tmp_addResult = DataA + DataB + Cin;
 	     wire [32:0] tmp_subResult = DataA - DataB - !Cin;   
    
 	     assign  Result = (Add_Sub == 1) ? tmp_addResult[31:0] : tmp_subResult[31:0];
 	     assign  Cout = (Add_Sub == 1) ? tmp_addResult[32] : !tmp_subResult[32];
-	  end else begin
-	    pmi_addsub #(// ----- Parameters -------
-			 .pmi_data_width     (32),
-			 .pmi_result_width   (32),
-			 .pmi_sign           ("off"),
-			 .pmi_family         (`LATTICE_FAMILY),
-			 .module_type        ("pmi_addsub")) 
-	      addsub    (// ----- Inputs -------
-			 .DataA              (DataA),
-			 .DataB              (DataB),
-			 .Cin                (Cin),
-			 .Add_Sub            (Add_Sub),
-			 // ----- Outputs -------
-			 .Result             (Result),
-			 .Cout               (Cout),
-			 .Overflow           ());
-	  end
+
        endgenerate 
 
 endmodule

@@ -62,8 +62,9 @@
 // =============================================================================
 `ifndef TPIO_V
 `define TPIO_V
+`timescale 1ns/100 ps
 `include "system_conf.v"
-module tpio #(parameter DATA_WIDTH = 16,
+module TRI_PIO #(parameter DATA_WIDTH = 16,
                  parameter IRQ_MODE = 1,
 		 parameter LEVEL = 0,
                  parameter EDGE = 1,
@@ -129,7 +130,9 @@ module tpio #(parameter DATA_WIDTH = 16,
      else if (PIO_DATA_RE_EN)
        PIO_DATA_I <= #UDLY PIO_IO_I;
    
-   BB tpio_inst(.I(PIO_DATA_O), .T(~PIO_TRI), .O(PIO_IO_I), .B(PIO_IO));
+
+	assign  PIO_IO = (PIO_TRI) ? PIO_DATA_O : 1'bZ;
+	assign  PIO_IO_I = PIO_IO;
    assign  DAT_O =  PIO_TRI_RE_EN ? PIO_TRI  : 
                    IRQ_MASK_RE_EN ? IRQ_MASK : PIO_DATA_I;
 

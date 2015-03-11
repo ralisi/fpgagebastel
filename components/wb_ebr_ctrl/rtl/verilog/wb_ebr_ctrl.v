@@ -79,6 +79,7 @@
 
 `ifndef WB_EBR_CTRL_FILE
  `define WB_EBR_CTRL_FILE
+ `timescale 1ns/100ps
  `include "system_conf.v"
 module wb_ebr_ctrl 
   #(parameter SIZE             = 4096,
@@ -118,8 +119,7 @@ module wb_ebr_ctrl
 	 clogb2 = i-1;
       end
    endfunction // clogb2
-
-   parameter lat_family = `LATTICE_FAMILY;
+   
    parameter UDLY = 1;
    parameter EBR_WB_ADR_WIDTH = (EBR_WB_DAT_WIDTH == 8) ? clogb2(SIZE) : clogb2(SIZE/4);
    parameter EBR_ADDR_DEPTH = (EBR_WB_DAT_WIDTH == 8) ? SIZE : SIZE/4;
@@ -131,108 +131,7 @@ module wb_ebr_ctrl
    parameter ST_SUBWR = 3'b110;
    
    generate
-      
-      if (EBR_WB_DAT_WIDTH == 8) begin
-	 
-	 /*----------------------------------------------------------------------
-	  Internal Nets and Registers
-	  ----------------------------------------------------------------------*/
-	 wire [7:0] rdData;
-	 reg [EBR_WB_ADR_WIDTH-1:0] ebr_address, ebr_address_nxt;
-	 					    
-	 /*----------------------------------------------------------------------
-	  State Machine
-	  ----------------------------------------------------------------------*/
-	 reg 	    state, state_nxt;
-	 always @(/*AUTOSENSE*/EBR_ACK_O or EBR_CTI_I or EBR_CYC_I
-		  or EBR_STB_I or state)
-	   if (((state == 1'b0) 
-		&& EBR_CYC_I && EBR_STB_I && (EBR_ACK_O == 1'b0))
-	       || (state 
-		   && (EBR_CTI_I != 3'b000) && (EBR_CTI_I != 3'b111)))
-	     state_nxt = 1'b1;
-	   else
-	     state_nxt = 1'b0;
-	 
-	 /*----------------------------------------------------------------------
-	  
-	  ----------------------------------------------------------------------*/
-	 always @(/*AUTOSENSE*/EBR_ADR_I or EBR_STB_I or ebr_address
-		  or state)
-	   begin
-	      if (state == 1'b0)
-		ebr_address_nxt = EBR_ADR_I[EBR_WB_ADR_WIDTH-1:0];
-	      else
-		if (state && EBR_STB_I)
-		  ebr_address_nxt = ebr_address + 1'b1;
-		else
-		  ebr_address_nxt = ebr_address;
-	   end
-	 
-	 /*----------------------------------------------------------------------
-	  Set up outgoing wishbone signals
-	  ----------------------------------------------------------------------*/
-	 always @(/*AUTOSENSE*/EBR_STB_I or rdData or state)
-	   begin
-	      EBR_ACK_O = state & EBR_STB_I;
-	      EBR_DAT_O = rdData;
-	      EBR_RTY_O = 1'b0;
-	      EBR_ERR_O = 1'b0;
-	   end
-	      
-	 /*----------------------------------------------------------------------
-	  Sequential Logic
-	  ----------------------------------------------------------------------*/
-	 always @(posedge CLK_I)
-	   if (RST_I)
-	     begin
-		state       <= #UDLY 1'b0;
-		ebr_address <= #UDLY 0;
-	     end
-	   else
-	     begin
-		state       <= #UDLY state_nxt;
-		ebr_address <= #UDLY ebr_address_nxt;
-	     end
-	 
-	 /*----------------------------------------------------------------------
-	  Actual EBR Instantiation
-	  ----------------------------------------------------------------------*/
-	    pmi_ram_dp 
-	      #(
-		.pmi_wr_addr_depth    (EBR_ADDR_DEPTH),
-		.pmi_wr_addr_width    (EBR_WB_ADR_WIDTH),
-		.pmi_wr_data_width    (EBR_WB_DAT_WIDTH),
-		.pmi_rd_addr_depth    (EBR_ADDR_DEPTH),
-		.pmi_rd_addr_width    (EBR_WB_ADR_WIDTH),
-		.pmi_rd_data_width    (EBR_WB_DAT_WIDTH),
-		.pmi_regmode          ("noreg"),
-		.pmi_init_file        (INIT_FILE_NAME),
-		.pmi_init_file_format (INIT_FILE_FORMAT),
-		.pmi_gsr              ("enable"),
-		.pmi_resetmode        ("sync"),
-		.pmi_family           (`LATTICE_FAMILY),
-		.module_type          ("pmi_ram_dp")
-		)
-	    ram
-	      (
-	       // ----- Inputs -------
-	       .Reset              (RST_I),
-	       .WrClock            (CLK_I),
-	       .RdClock            (CLK_I),
-	       .WrClockEn          (1'b1),
-	       .RdClockEn          (1'b1),
-	       .RdAddress          (ebr_address_nxt),
-	       .WrAddress          (EBR_ADR_I[EBR_WB_ADR_WIDTH-1:0]),
-	       .Data               (EBR_DAT_I),
-	       .WE                 (EBR_WE_I & EBR_CYC_I & EBR_STB_I),
-	       // ----- Outputs -------
-	       .Q                  (rdData)
-	       );
-	    
-      end
-      else begin
-	 
+     	 
 	 /*----------------------------------------------------------------------
 	  Internal Nets and Registers
 	  ----------------------------------------------------------------------*/
@@ -360,8 +259,8 @@ module wb_ebr_ctrl
 	 /*----------------------------------------------------------------------
 	  Set up address to EBR
 	  ----------------------------------------------------------------------*/
-	 always @(/*AUTOSENSE*/EBR_ADR_I or EBR_SEL_I or EBR_WE_I
-		  or pmi_address or state)
+	 always @(/*AUTOSENSE*/EBR_ADR_I or EBR_WE_I or pmi_address
+		  or state)
 	   begin
 	      if (// First address of any access is obtained from Wishbone signals
 		  (state == ST_IDLE)
@@ -444,39 +343,16 @@ module wb_ebr_ctrl
 	 /*----------------------------------------------------------------------
 	  Actual EBR Instantiation
 	  ----------------------------------------------------------------------*/
-	 pmi_ram_dp 
-	   #(
-	     .pmi_wr_addr_depth    (EBR_ADDR_DEPTH),
-	     .pmi_wr_addr_width    (EBR_WB_ADR_WIDTH),
-	     .pmi_wr_data_width    (EBR_WB_DAT_WIDTH),
-	     .pmi_rd_addr_depth    (EBR_ADDR_DEPTH),
-	     .pmi_rd_addr_width    (EBR_WB_ADR_WIDTH),
-	     .pmi_rd_data_width    (EBR_WB_DAT_WIDTH),
-	     .pmi_regmode          ("noreg"),
-	     .pmi_init_file        (INIT_FILE_NAME),
-	     .pmi_init_file_format (INIT_FILE_FORMAT),
-	     .pmi_gsr              ("enable"),
-	     .pmi_resetmode        ("sync"),
-	     .pmi_family           (`LATTICE_FAMILY),
-	     .module_type          ("pmi_ram_dp")
-	     )
-	 ram
-	   (
-	    // ----- Inputs -------
-	    .Reset              (RST_I),
-	    .WrClock            (CLK_I),
-	    .RdClock            (CLK_I),
-	    .WrClockEn          (1'b1),
-	    .RdClockEn          (read_enable),
-	    .RdAddress          (read_address[EBR_WB_ADR_WIDTH-1:0]),
-	    .WrAddress          (write_address[EBR_WB_ADR_WIDTH-1:0]),
-	    .Data               (write_data),
-	    .WE                 (write_enable),
-	    // ----- Outputs -------
-	    .Q                  (data)
-	    );
 
-	 end
+		 memory memory (
+		.clka(CLK_I),
+		.rsta(RST_I),
+		.wea(write_enable), // Bus [0 : 0] 
+		.addra(write_address[EBR_WB_ADR_WIDTH-1:0]), // Bus [8 : 0] 
+		.dina(write_data), // Bus [31 : 0] 
+		.douta(data)); // Bus [31 : 0] 
+
+
       
    endgenerate
    
