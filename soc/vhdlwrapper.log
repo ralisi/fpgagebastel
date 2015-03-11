@@ -1,0 +1,40 @@
+Program: C:\lscc\diamond\3.4_x64\micosystem\utilities\tclscript\vhdlwrapper.tcl
+Number of arguments: 9
+Argument: 0: C:\lscc\diamond\3.4_x64\examples\MyTest\soc
+Argument: 1: MyTest
+Argument: 2: nongo
+Argument: 3: 2.1
+Argument: 4: C:\lscc\diamond\3.4_x64
+Argument: 5: C:\lscc\diamond\3.4_x64\bin\nt64
+Argument: 6: C:\lscc\diamond\3.4_x64\ispfpga\bin\nt64
+Argument: 7: C:\lscc\diamond\3.4_x64\tcltk\lib
+Argument: 8: true
+
+install_dir: C:/lscc/diamond/3.4_x64
+cpld_bin: C:/lscc/diamond/3.4_x64/bin/nt64
+fpga_bin: C:/lscc/diamond/3.4_x64/ispfpga/bin/nt64
+fpga_dir: C:/lscc/diamond/3.4_x64/ispfpga
+tcl_lib: C:/lscc/diamond/3.4_x64/tcltk/lib
+bali_app: true
+
+Verilog Filename: C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest.v
+VHDL Filename: C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest_vhd.vhd
+MSB Filename: C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest.msb
+
+open C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest.msb
+tech: EC
+cpu: LM32
+comp: lm32_top
+comp: wb_ebr_ctrl
+comp: gpio
+close C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest.msb
+
+open C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest.v
+
+
+list top module port type width bus
+gpioPIO_OUT out 8-1 1
+open C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest_vhd.vhd
+close C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest_vhd.vhd
+
+Tech: EC
