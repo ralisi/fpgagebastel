@@ -1,0 +1,17 @@
+NET "clk_i" LOC = "B8"; # Bank = 0, Signal name = MCLK
+#NET "uclk" LOC = "M6"; # Bank = 2, Signal name = UCLK
+NET "clk_i" CLOCK_DEDICATED_ROUTE = FALSE;
+#NET "uclk" CLOCK_DEDICATED_ROUTE = FALSE;
+
+# Pin assignment for LEDs
+NET "gpioPIO_OUT<7>" LOC = "g1" ;
+NET "gpioPIO_OUT<6>" LOC = "p4" ;
+NET "gpioPIO_OUT<5>" LOC = "n4" ;
+NET "gpioPIO_OUT<4>" LOC = "n5" ;
+NET "gpioPIO_OUT<3>" LOC = "p6" ;
+NET "gpioPIO_OUT<2>" LOC = "p7" ;
+NET "gpioPIO_OUT<1>" LOC = "m11" ;
+NET "gpioPIO_OUT<0>" LOC = "m5" ;
+
+# button 0
+NET "reset_n" LOC = "g12"; 
