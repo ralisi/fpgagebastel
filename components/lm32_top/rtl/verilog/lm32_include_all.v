@@ -49,7 +49,6 @@
 `ifndef LM32_ALL_FILES
 `define LM32_ALL_FILES
 `ifndef SIMULATION
-`include "pmi_def.v"
 `endif
 `include "system_conf.v"
 // JTAG Debug related files

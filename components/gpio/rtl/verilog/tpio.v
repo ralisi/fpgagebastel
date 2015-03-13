@@ -64,7 +64,7 @@
 `define TPIO_V
 `timescale 1ns/100 ps
 `include "system_conf.v"
-module TRI_PIO #(parameter DATA_WIDTH = 16,
+module tpio #(parameter DATA_WIDTH = 16,
                  parameter IRQ_MODE = 1,
 		 parameter LEVEL = 0,
                  parameter EDGE = 1,

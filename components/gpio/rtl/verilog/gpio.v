@@ -206,7 +206,7 @@ module gpio
 	 if (GPIO_WB_DAT_WIDTH == 8) begin
 	    genvar ipd_idx;
 	    for (ipd_idx = 0; (ipd_idx < DATA_WIDTH) && (ipd_idx < 8); ipd_idx = ipd_idx + 1)
-	      begin
+	      begin : Kekse
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I)
 		     PIO_DATA[ipd_idx] <= #UDLY 0;
@@ -216,7 +216,7 @@ module gpio
 	    if (DATA_WIDTH > 8) begin
 	       genvar jpd_idx;
 	       for (jpd_idx = 8; (jpd_idx < DATA_WIDTH) && (jpd_idx < 16); jpd_idx = jpd_idx + 1)
-		 begin
+		 begin : Blub
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			PIO_DATA[jpd_idx] <= #UDLY 0;
@@ -227,7 +227,7 @@ module gpio
 	    if (DATA_WIDTH > 16) begin
 	       genvar kpd_idx;
 	       for (kpd_idx = 16; (kpd_idx < DATA_WIDTH) && (kpd_idx < 24); kpd_idx = kpd_idx + 1)
-		 begin
+		 begin : Danny3
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			PIO_DATA[kpd_idx] <= #UDLY 0;
@@ -238,7 +238,7 @@ module gpio
 	    if (DATA_WIDTH > 24) begin
 	       genvar lpd_idx;
 	       for (lpd_idx = 24; (lpd_idx < DATA_WIDTH) && (lpd_idx < 32); lpd_idx = lpd_idx + 1)
-		 begin
+		 begin : Meh
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			PIO_DATA[lpd_idx] <= #UDLY 0;
@@ -251,7 +251,7 @@ module gpio
 	 else if (GPIO_WB_DAT_WIDTH == 32) begin
 	    genvar ipd_idx;
 	    for (ipd_idx = 0; (ipd_idx < DATA_WIDTH) && (ipd_idx < 8); ipd_idx = ipd_idx + 1)
-	      begin
+	      begin : NoName1
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I)
 		     PIO_DATA[ipd_idx] <= #UDLY 0;
@@ -261,7 +261,7 @@ module gpio
 	    if (DATA_WIDTH > 8) begin
 	       genvar jpd_idx;
 	       for (jpd_idx = 8; (jpd_idx < DATA_WIDTH) && (jpd_idx < 16); jpd_idx = jpd_idx + 1)
-		 begin
+		 begin : NoName2
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			PIO_DATA[jpd_idx] <= #UDLY 0;
@@ -272,7 +272,7 @@ module gpio
 	    if (DATA_WIDTH > 16) begin
 	       genvar kpd_idx;
 	       for (kpd_idx = 16; (kpd_idx < DATA_WIDTH) && (kpd_idx < 24); kpd_idx = kpd_idx + 1)
-		 begin
+		 begin : NoName3
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			PIO_DATA[kpd_idx] <= #UDLY 0;
@@ -283,7 +283,7 @@ module gpio
 	    if (DATA_WIDTH > 24) begin
 	       genvar lpd_idx;
 	       for (lpd_idx = 24; (lpd_idx < DATA_WIDTH) && (lpd_idx < 32); lpd_idx = lpd_idx + 1)
-		 begin
+		 begin : NoName4
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			PIO_DATA[lpd_idx] <= #UDLY 0;
@@ -302,7 +302,7 @@ module gpio
 	 if (GPIO_WB_DAT_WIDTH == 8) begin
 	    genvar iopd_idx;
 	    for (iopd_idx = 0; (iopd_idx < OUTPUT_WIDTH) && (iopd_idx < 8); iopd_idx = iopd_idx + 1)
-	      begin
+	      begin : NoName5
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I) 
 		     PIO_DATAO[iopd_idx] <= #UDLY 0;
@@ -312,7 +312,7 @@ module gpio
 	    if (OUTPUT_WIDTH > 8) begin
 	       genvar jopd_idx;
 	       for (jopd_idx = 8; (jopd_idx < OUTPUT_WIDTH) && (jopd_idx < 16); jopd_idx = jopd_idx + 1)
-		 begin
+		 begin : NoName6
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I) 
 			PIO_DATAO[jopd_idx] <= #UDLY 0;
@@ -323,7 +323,7 @@ module gpio
 	    if (OUTPUT_WIDTH > 16) begin
 	       genvar kopd_idx;
 	       for (kopd_idx = 16; (kopd_idx < OUTPUT_WIDTH) && (kopd_idx < 24); kopd_idx = kopd_idx + 1)
-		 begin
+		 begin : NoName7
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I) 
 			PIO_DATAO[kopd_idx] <= #UDLY 0;
@@ -334,7 +334,7 @@ module gpio
 	    if (OUTPUT_WIDTH > 24) begin
 	       genvar lopd_idx;
 	       for (lopd_idx = 24; (lopd_idx < OUTPUT_WIDTH) && (lopd_idx < 32); lopd_idx = lopd_idx + 1)
-		 begin
+		 begin : NoName8
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I) 
 			PIO_DATAO[lopd_idx] <= #UDLY 0;
@@ -344,7 +344,7 @@ module gpio
 	    end
 	    genvar mopd_idx;
 	    for (mopd_idx = 0; (mopd_idx < INPUT_WIDTH) && (mopd_idx < 8); mopd_idx = mopd_idx + 1)
-	      begin
+	      begin : NoName9
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I) 
 		     PIO_DATAI[mopd_idx] <= #UDLY 0;
@@ -354,7 +354,7 @@ module gpio
 	    if (INPUT_WIDTH > 8) begin
 	       genvar nopd_idx;
 	       for (nopd_idx = 8; (nopd_idx < INPUT_WIDTH) && (nopd_idx < 16); nopd_idx = nopd_idx + 1)
-		 begin
+		 begin : NoName10
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I) 
 			PIO_DATAI[nopd_idx] <= #UDLY 0;
@@ -365,7 +365,7 @@ module gpio
 	    if (INPUT_WIDTH > 16) begin
 	       genvar oopd_idx;
 	       for (oopd_idx = 16; (oopd_idx < INPUT_WIDTH) && (oopd_idx < 24); oopd_idx = oopd_idx + 1)
-		 begin
+		 begin : NoName11
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I) 
 			PIO_DATAI[oopd_idx] <= #UDLY 0;
@@ -376,7 +376,7 @@ module gpio
 	    if (INPUT_WIDTH > 24) begin
 	       genvar popd_idx;
 	       for (popd_idx = 24; (popd_idx < INPUT_WIDTH) && (popd_idx < 32); popd_idx = popd_idx + 1)
-		 begin
+		 begin : NoName12
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I) 
 			PIO_DATAI[popd_idx] <= #UDLY 0;
@@ -389,7 +389,7 @@ module gpio
 	 else if (GPIO_WB_DAT_WIDTH == 32) begin
 	    genvar iopd_idx;
 	    for (iopd_idx = 0; (iopd_idx < OUTPUT_WIDTH) && (iopd_idx < 8); iopd_idx = iopd_idx + 1)
-	      begin
+	      begin : NoName13
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I) 
 		     PIO_DATAO[iopd_idx] <= #UDLY 0;
@@ -399,7 +399,7 @@ module gpio
 	    if (OUTPUT_WIDTH > 8) begin
 	       genvar jopd_idx;
 	       for (jopd_idx = 8; (jopd_idx < OUTPUT_WIDTH) && (jopd_idx < 16); jopd_idx = jopd_idx + 1)
-		 begin
+		 begin : NoName14
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I) 
 			PIO_DATAO[jopd_idx] <= #UDLY 0;
@@ -410,7 +410,7 @@ module gpio
 	    if (OUTPUT_WIDTH > 16) begin
 	       genvar kopd_idx;
 	       for (kopd_idx = 16; (kopd_idx < OUTPUT_WIDTH) && (kopd_idx < 24); kopd_idx = kopd_idx + 1)
-		 begin
+		 begin : NoName15
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I) 
 			PIO_DATAO[kopd_idx] <= #UDLY 0;
@@ -421,7 +421,7 @@ module gpio
 	    if (OUTPUT_WIDTH > 24) begin
 	       genvar lopd_idx;
 	       for (lopd_idx = 24; (lopd_idx < OUTPUT_WIDTH) && (lopd_idx < 32); lopd_idx = lopd_idx + 1)
-		 begin
+		 begin : NoName16
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I) 
 			PIO_DATAO[lopd_idx] <= #UDLY 0;
@@ -431,7 +431,7 @@ module gpio
 	    end
 	    genvar mopd_idx;
 	    for (mopd_idx = 0; (mopd_idx < INPUT_WIDTH) && (mopd_idx < 8); mopd_idx = mopd_idx + 1)
-	      begin
+	      begin : NoName17
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I) 
 		     PIO_DATAI[mopd_idx] <= #UDLY 0;
@@ -441,7 +441,7 @@ module gpio
 	    if (INPUT_WIDTH > 8) begin
 	       genvar nopd_idx;
 	       for (nopd_idx = 8; (nopd_idx < INPUT_WIDTH) && (nopd_idx < 16); nopd_idx = nopd_idx + 1)
-		 begin
+		 begin : NoName18
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I) 
 			PIO_DATAI[nopd_idx] <= #UDLY 0;
@@ -452,7 +452,7 @@ module gpio
 	    if (INPUT_WIDTH > 16) begin
 	       genvar oopd_idx;
 	       for (oopd_idx = 16; (oopd_idx < INPUT_WIDTH) && (oopd_idx < 24); oopd_idx = oopd_idx + 1)
-		 begin
+		 begin : NoName19
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I) 
 			PIO_DATAI[oopd_idx] <= #UDLY 0;
@@ -463,7 +463,7 @@ module gpio
 	    if (INPUT_WIDTH > 24) begin
 	       genvar popd_idx;
 	       for (popd_idx = 24; (popd_idx < INPUT_WIDTH) && (popd_idx < 32); popd_idx = popd_idx + 1)
-		 begin
+		 begin : NoName20
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I) 
 			PIO_DATAI[popd_idx] <= #UDLY 0;
@@ -1022,7 +1022,7 @@ module gpio
 	    
 	    genvar im_idx;
 	    for (im_idx = 0; (im_idx < DATA_WIDTH) && (im_idx < 8); im_idx = im_idx + 1)
-	      begin
+	      begin : NoName21
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I)
 		     IRQ_MASK[im_idx] <= #UDLY 0;
@@ -1032,7 +1032,7 @@ module gpio
 	    if (DATA_WIDTH > 8) begin
 	       genvar jm_idx;
 	       for (jm_idx = 8; (jm_idx < DATA_WIDTH) && (jm_idx < 16); jm_idx = jm_idx + 1)
-		 begin
+		 begin : NoName22
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_MASK[jm_idx] <= #UDLY 0;
@@ -1043,7 +1043,7 @@ module gpio
 	    if (DATA_WIDTH > 16) begin
 	       genvar km_idx;
 	       for (km_idx = 16; (km_idx < DATA_WIDTH) && (km_idx < 24); km_idx = km_idx + 1)
-		 begin
+		 begin : NoName23
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_MASK[km_idx] <= #UDLY 0;
@@ -1054,7 +1054,7 @@ module gpio
 	    if (DATA_WIDTH > 24) begin
 	       genvar lm_idx;
 	       for (lm_idx = 24; (lm_idx < DATA_WIDTH) && (lm_idx < 32); lm_idx = lm_idx + 1)
-		 begin
+		 begin : NoName24
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_MASK[lm_idx] <= #UDLY 0;
@@ -1065,7 +1065,7 @@ module gpio
 	    
 	    genvar imb_idx;
 	    for (imb_idx = 0; (imb_idx < INPUT_WIDTH) && (imb_idx < 8); imb_idx = imb_idx + 1)
-	      begin
+	      begin : NoName25
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I)
 		     IRQ_MASK_BOTH[imb_idx] <= #UDLY 0;
@@ -1075,7 +1075,7 @@ module gpio
 	    if (INPUT_WIDTH > 8) begin
 	       genvar jmb_idx;
 	       for (jmb_idx = 8; (jmb_idx < INPUT_WIDTH) && (jmb_idx < 16); jmb_idx = jmb_idx + 1)
-		 begin
+		 begin : NoName26
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_MASK_BOTH[jmb_idx] <= #UDLY 0;
@@ -1086,7 +1086,7 @@ module gpio
 	    if (INPUT_WIDTH > 16) begin
 	       genvar kmb_idx;
 	       for (kmb_idx = 16; (kmb_idx < INPUT_WIDTH) && (kmb_idx < 24); kmb_idx = kmb_idx + 1)
-		 begin
+		 begin : NoName27
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_MASK_BOTH[kmb_idx] <= #UDLY 0;
@@ -1097,7 +1097,7 @@ module gpio
 	    if (INPUT_WIDTH > 24) begin
 	       genvar lmb_idx;
 	       for (lmb_idx = 24; (lmb_idx < INPUT_WIDTH) && (lmb_idx < 32); lmb_idx = lmb_idx + 1)
-		 begin
+		 begin : NoName28
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_MASK_BOTH[lmb_idx] <= #UDLY 0;
@@ -1111,7 +1111,7 @@ module gpio
 	    
 	    genvar im_idx;
 	    for (im_idx = 0; (im_idx < DATA_WIDTH) && (im_idx < 8); im_idx = im_idx + 1)
-	      begin
+	      begin : NoName29
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I)
 		     IRQ_MASK[im_idx] <= #UDLY 0;
@@ -1121,7 +1121,7 @@ module gpio
 	    if (DATA_WIDTH > 8) begin
 	       genvar jm_idx;
 	       for (jm_idx = 8; (jm_idx < DATA_WIDTH) && (jm_idx < 16); jm_idx = jm_idx + 1)
-		 begin
+		 begin : NoName30
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_MASK[jm_idx] <= #UDLY 0;
@@ -1132,7 +1132,7 @@ module gpio
 	    if (DATA_WIDTH > 16) begin
 	       genvar km_idx;
 	       for (km_idx = 16; (km_idx < DATA_WIDTH) && (km_idx < 24); km_idx = km_idx + 1)
-		 begin
+		 begin : NoName31
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_MASK[km_idx] <= #UDLY 0;
@@ -1143,7 +1143,7 @@ module gpio
 	    if (DATA_WIDTH > 24) begin
 	       genvar lm_idx;
 	       for (lm_idx = 24; (lm_idx < DATA_WIDTH) && (lm_idx < 32); lm_idx = lm_idx + 1)
-		 begin
+		 begin : NoName32
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_MASK[lm_idx] <= #UDLY 0;
@@ -1154,7 +1154,7 @@ module gpio
 	    
 	    genvar imb_idx;
 	    for (imb_idx = 0; (imb_idx < INPUT_WIDTH) && (imb_idx < 8); imb_idx = imb_idx + 1)
-	      begin
+	      begin : NoName33
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I)
 		     IRQ_MASK_BOTH[imb_idx] <= #UDLY 0;
@@ -1164,7 +1164,7 @@ module gpio
 	    if (INPUT_WIDTH > 8) begin
 	       genvar jmb_idx;
 	       for (jmb_idx = 8; (jmb_idx < INPUT_WIDTH) && (jmb_idx < 16); jmb_idx = jmb_idx + 1)
-		 begin
+		 begin : NoName34
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_MASK_BOTH[jmb_idx] <= #UDLY 0;
@@ -1175,7 +1175,7 @@ module gpio
 	    if (INPUT_WIDTH > 16) begin
 	       genvar kmb_idx;
 	       for (kmb_idx = 16; (kmb_idx < INPUT_WIDTH) && (kmb_idx < 24); kmb_idx = kmb_idx + 1)
-		 begin
+		 begin : NoName35
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_MASK_BOTH[kmb_idx] <= #UDLY 0;
@@ -1186,7 +1186,7 @@ module gpio
 	    if (INPUT_WIDTH > 24) begin
 	       genvar lmb_idx;
 	       for (lmb_idx = 24; (lmb_idx < INPUT_WIDTH) && (lmb_idx < 32); lmb_idx = lmb_idx + 1)
-		 begin
+		 begin : NoName3501
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_MASK_BOTH[lmb_idx] <= #UDLY 0;
@@ -1214,7 +1214,7 @@ module gpio
 	    
 	    genvar i;
 	    for (i = 0; (i < DATA_WIDTH) && (i < 8); i = i + 1)
-	      begin
+	      begin : NoName36
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I)
 		  IRQ_TEMP[i] <= #UDLY 0;
@@ -1226,7 +1226,7 @@ module gpio
 	    if (DATA_WIDTH > 8) begin
 	       genvar j;
 	       for (j = 8; (j < DATA_WIDTH) && (j < 16); j = j + 1)
-		 begin
+		 begin : NoName37
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_TEMP[j] <= #UDLY 0;
@@ -1239,7 +1239,7 @@ module gpio
 	    if (DATA_WIDTH > 16) begin
 	       genvar k;
 	       for (k = 16; (k < DATA_WIDTH) && (k < 24); k = k + 1)
-		 begin
+		 begin : NoName38
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_TEMP[k] <= #UDLY 0;
@@ -1252,7 +1252,7 @@ module gpio
 	    if (DATA_WIDTH > 24) begin
 	       genvar l;
 	       for (l = 24; (l < DATA_WIDTH) && (l < 32); l = l + 1)
-		 begin
+		 begin : NoName39
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_TEMP[l] <= #UDLY 0;
@@ -1269,7 +1269,7 @@ module gpio
 	    
 	    genvar i;
 	    for (i = 0; (i < DATA_WIDTH) && (i < 8); i = i + 1)
-	      begin
+	      begin : NoName40
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I)
 		  IRQ_TEMP[i] <= #UDLY 0;
@@ -1281,7 +1281,7 @@ module gpio
 	    if (DATA_WIDTH > 8) begin
 	       genvar j;
 	       for (j = 8; (j < DATA_WIDTH) && (j < 16); j = j + 1)
-		 begin
+		 begin : NoName41
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_TEMP[j] <= #UDLY 0;
@@ -1294,7 +1294,7 @@ module gpio
 	    if (DATA_WIDTH > 16) begin
 	       genvar k;
 	       for (k = 16; (k < DATA_WIDTH) && (k < 24); k = k + 1)
-		 begin
+		 begin : NoName42
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_TEMP[k] <= #UDLY 0;
@@ -1307,7 +1307,7 @@ module gpio
 	    if (DATA_WIDTH > 24) begin
 	       genvar l;
 	       for (l = 24; (l < DATA_WIDTH) && (l < 32); l = l + 1)
-		 begin
+		 begin : NoName43
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_TEMP[l] <= #UDLY 0;
@@ -1338,7 +1338,7 @@ module gpio
 	    
             genvar i;
             for (i = 0; (i < DATA_WIDTH) && (i < 8); i = i + 1)
-              begin
+              begin : NoName44
 		 always @(posedge CLK_I or posedge RST_I)
                    if (RST_I)
                      EDGE_CAPTURE[i] <= #UDLY 0;
@@ -1362,7 +1362,7 @@ module gpio
 	    if (DATA_WIDTH > 8) begin
                genvar j;
                for (j = 8; (j < DATA_WIDTH) && (j < 16); j = j + 1)
-		 begin
+		 begin : NoName45
 		    always @(posedge CLK_I or posedge RST_I)
                       if (RST_I)
 			EDGE_CAPTURE[j] <= #UDLY 0;
@@ -1387,7 +1387,7 @@ module gpio
 	    if (DATA_WIDTH > 16) begin
                genvar k;
                for (k = 16; (k < DATA_WIDTH) && (k < 24); k = k + 1)
-		 begin
+		 begin : NoName46
 		    always @(posedge CLK_I or posedge RST_I)
                       if (RST_I)
 			EDGE_CAPTURE[k] <= #UDLY 0;
@@ -1412,7 +1412,7 @@ module gpio
 	    if (DATA_WIDTH > 24) begin
                genvar l;
                for (l = 24; l < DATA_WIDTH; l = l + 1)
-		 begin
+		 begin : NoName47
 		    always @(posedge CLK_I or posedge RST_I)
                       if (RST_I)
 			EDGE_CAPTURE[l] <= #UDLY 0;
@@ -1439,7 +1439,7 @@ module gpio
 	    
             genvar i;
             for (i = 0; (i < DATA_WIDTH) && (i < 8); i = i + 1)
-              begin
+              begin : NoName48
 		 always @(posedge CLK_I or posedge RST_I)
                    if (RST_I)
                      EDGE_CAPTURE[i] <= #UDLY 0;
@@ -1463,7 +1463,7 @@ module gpio
 	    if (DATA_WIDTH > 8) begin
                genvar j;
                for (j = 8; (j < DATA_WIDTH) && (j < 16); j = j + 1)
-		 begin
+		 begin : NoName49
 		    always @(posedge CLK_I or posedge RST_I)
                       if (RST_I)
 			EDGE_CAPTURE[j] <= #UDLY 0;
@@ -1488,7 +1488,7 @@ module gpio
 	    if (DATA_WIDTH > 16) begin
                genvar k;
                for (k = 16; (k < DATA_WIDTH) && (k < 24); k = k + 1)
-		 begin
+		 begin : NoName50
 		    always @(posedge CLK_I or posedge RST_I)
                       if (RST_I)
 			EDGE_CAPTURE[k] <= #UDLY 0;
@@ -1513,7 +1513,7 @@ module gpio
 	    if (DATA_WIDTH > 24) begin
                genvar l;
                for (l = 24; l < DATA_WIDTH; l = l + 1)
-		 begin
+		 begin : NoName51
 		    always @(posedge CLK_I or posedge RST_I)
                       if (RST_I)
 			EDGE_CAPTURE[l] <= #UDLY 0;
@@ -1550,7 +1550,7 @@ module gpio
 	    
 	    genvar iitb_idx;
 	    for (iitb_idx = 0; (iitb_idx < INPUT_WIDTH) && (iitb_idx < 8); iitb_idx = iitb_idx + 1)
-	      begin
+	      begin : NoName52
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I)
 		     IRQ_TEMP_BOTH[iitb_idx] <= #UDLY 0;
@@ -1562,7 +1562,7 @@ module gpio
 	    if (INPUT_WIDTH > 8) begin
 	       genvar jitb_idx;
 	       for (jitb_idx = 8; (jitb_idx < INPUT_WIDTH) && (jitb_idx < 16); jitb_idx = jitb_idx + 1)
-		 begin
+		 begin : NoName53
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_TEMP_BOTH[jitb_idx] <= #UDLY 0;
@@ -1575,7 +1575,7 @@ module gpio
 	    if (INPUT_WIDTH > 16) begin
 	       genvar kitb_idx;
 	       for (kitb_idx = 16; (kitb_idx < INPUT_WIDTH) && (kitb_idx < 24); kitb_idx = kitb_idx + 1)
-		 begin
+		 begin : NoName59
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_TEMP_BOTH[kitb_idx] <= #UDLY 0;
@@ -1588,7 +1588,7 @@ module gpio
 	    if (INPUT_WIDTH > 24) begin
 	       genvar litb_idx;
 	       for (litb_idx = 24; (litb_idx < INPUT_WIDTH) && (litb_idx < 24); litb_idx = litb_idx + 1)
-		 begin
+		 begin : NoName54
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_TEMP_BOTH[litb_idx] <= #UDLY 0;
@@ -1605,7 +1605,7 @@ module gpio
 	    
 	    genvar iitb_idx;
 	    for (iitb_idx = 0; (iitb_idx < INPUT_WIDTH) && (iitb_idx < 8); iitb_idx = iitb_idx + 1)
-	      begin
+	      begin : NoName55
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I)
 		     IRQ_TEMP_BOTH[iitb_idx] <= #UDLY 0;
@@ -1617,7 +1617,7 @@ module gpio
 	    if (INPUT_WIDTH > 8) begin
 	       genvar jitb_idx;
 	       for (jitb_idx = 8; (jitb_idx < INPUT_WIDTH) && (jitb_idx < 16); jitb_idx = jitb_idx + 1)
-		 begin
+		 begin : NoName56
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_TEMP_BOTH[jitb_idx] <= #UDLY 0;
@@ -1630,7 +1630,7 @@ module gpio
 	    if (INPUT_WIDTH > 16) begin
 	       genvar kitb_idx;
 	       for (kitb_idx = 16; (kitb_idx < INPUT_WIDTH) && (kitb_idx < 24); kitb_idx = kitb_idx + 1)
-		 begin
+		 begin : NoName57
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_TEMP_BOTH[kitb_idx] <= #UDLY 0;
@@ -1643,7 +1643,7 @@ module gpio
 	    if (INPUT_WIDTH > 24) begin
 	       genvar litb_idx;
 	       for (litb_idx = 24; (litb_idx < INPUT_WIDTH) && (litb_idx < 24); litb_idx = litb_idx + 1)
-		 begin
+		 begin : NoName58
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			IRQ_TEMP_BOTH[litb_idx] <= #UDLY 0;
@@ -1674,7 +1674,7 @@ module gpio
 	    
 	    genvar i_both;
 	    for (i_both = 0; (i_both < INPUT_WIDTH) && (i_both < 8); i_both = i_both + 1)
-	      begin
+	      begin : NoName60
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I)
 		     EDGE_CAPTURE_BOTH[i_both] <= #UDLY 0;
@@ -1697,7 +1697,7 @@ module gpio
 	    if (INPUT_WIDTH > 8) begin
 	       genvar j_both;
 	       for (j_both = 8; (j_both < INPUT_WIDTH) && (j_both < 16); j_both = j_both + 1)
-		 begin
+		 begin : NoName61
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			EDGE_CAPTURE_BOTH[j_both] <= #UDLY 0;
@@ -1721,7 +1721,7 @@ module gpio
 	    if (INPUT_WIDTH > 16) begin
 	       genvar k_both;
 	       for (k_both = 16; (k_both < INPUT_WIDTH) && (k_both < 24); k_both = k_both + 1)
-		 begin
+		 begin : NoName62
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			EDGE_CAPTURE_BOTH[k_both] <= #UDLY 0;
@@ -1745,7 +1745,7 @@ module gpio
 	    if (INPUT_WIDTH > 24) begin
 	       genvar l_both;
 	       for (l_both = 24; (l_both < INPUT_WIDTH) && (l_both < 32); l_both = l_both + 1)
-		 begin
+		 begin : NoName63
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			EDGE_CAPTURE_BOTH[l_both] <= #UDLY 0;
@@ -1772,7 +1772,7 @@ module gpio
 	    
 	    genvar i_both;
 	    for (i_both = 0; (i_both < INPUT_WIDTH) && (i_both < 8); i_both = i_both + 1)
-	      begin
+	      begin : NoName64
 		 always @(posedge CLK_I or posedge RST_I)
 		   if (RST_I)
 		     EDGE_CAPTURE_BOTH[i_both] <= #UDLY 0;
@@ -1795,7 +1795,7 @@ module gpio
 	    if (INPUT_WIDTH > 8) begin
 	       genvar j_both;
 	       for (j_both = 8; (j_both < INPUT_WIDTH) && (j_both < 16); j_both = j_both + 1)
-		 begin
+		 begin : NoName65
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			EDGE_CAPTURE_BOTH[j_both] <= #UDLY 0;
@@ -1819,7 +1819,7 @@ module gpio
 	    if (INPUT_WIDTH > 16) begin
 	       genvar k_both;
 	       for (k_both = 16; (k_both < INPUT_WIDTH) && (k_both < 24); k_both = k_both + 1)
-		 begin
+		 begin : NoName66
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			EDGE_CAPTURE_BOTH[k_both] <= #UDLY 0;
@@ -1843,7 +1843,7 @@ module gpio
 	    if (INPUT_WIDTH > 24) begin
 	       genvar l_both;
 	       for (l_both = 24; (l_both < INPUT_WIDTH) && (l_both < 32); l_both = l_both + 1)
-		 begin
+		 begin : NoName67
 		    always @(posedge CLK_I or posedge RST_I)
 		      if (RST_I)
 			EDGE_CAPTURE_BOTH[l_both] <= #UDLY 0;
