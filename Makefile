@@ -12,7 +12,7 @@ build/Basys2UserDemo.pcf: build/Basys2UserDemo.ngd
 	cd build; map -detail -pr b $(notdir $<)
 
 build/parout.ncd: build/Basys2UserDemo.pcf
-	cd build; par -w Basys2UserDemo.ncd parout.ncd Basys2UserDemo.pcf
+	cd build; par -w Basys2UserDemo.ncd -pl std -rl std parout.ncd Basys2UserDemo.pcf
 
 
 build/Basys2UserDemo.bit: build/parout.ncd
