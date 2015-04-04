@@ -66,6 +66,26 @@ architecture Behavioral of DispCtrl is
 
   signal ck25MHz: std_logic;		-- ck 25MHz
 
+  component framebuffer IS
+    PORT (
+      clka : IN STD_LOGIC;
+      rsta : IN STD_LOGIC;
+      wea : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+      addra : IN STD_LOGIC_VECTOR(14 DOWNTO 0);
+      dina : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+      douta : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+      clkb : IN STD_LOGIC;
+      rstb : IN STD_LOGIC;
+      web : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+      addrb : IN STD_LOGIC_VECTOR(14 DOWNTO 0);
+      dinb : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+      doutb : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
+    );
+  END component;
+  signal scanPos: std_logic_vector(14 downto 0);
+  signal data_vec: std_logic_vector(0 downto 0);
+  signal data: std_logic;
+
 begin
 
 -- divide 50MHz clock to 25MHz
@@ -104,31 +124,35 @@ begin
 end if;
 end process; 
 
+
+  FRAME: framebuffer port map (
+      clka => ck25MHz,
+      rsta => '0',
+      wea => "0",
+      douta => data_vec,
+      addra => scanPos,
+      dina => "0",
+      clkb => ck25MHz,
+      rstb => '0',
+      web => "0",
+      --doutb => STD_LOGIC_VECTOR(0 DOWNTO 0),
+      addrb => "000000000000000",
+      dinb => "0"
+    );
+  data <= data_vec(0);
+
 -- mapping itnernal integers to std_logic_vector ports
   Hcnt <= conv_std_logic_vector(intHcnt,10);
   Vcnt <= conv_std_logic_vector(intVcnt,10);
+  scanPos <= Hcnt(7 downto 0) & Vcnt(6 downto 0);
 
   mixer: process(ck25MHz,intHcnt, intVcnt) 
   begin
     if intHcnt < PAL and intVcnt < LAF then	-- in the active screen
 
-      if Vcnt(7 downto 6) = "00" then
-         outRed <= Vcnt(5 downto 3); 
-         outGreen <= "000"; 
-         outBlue <= "00"; 
-      elsif Vcnt(7 downto 6) = "01" then
-         outRed <= "000"; 
-         outGreen <= Vcnt(5 downto 3); 
-         outBlue <= "00"; 
-      elsif Vcnt(7 downto 6) = "10" then
-         outRed <= "000"; 
-         outGreen <= "000"; 
-         outBlue <= Vcnt(5 downto 4); 
-      else
-         outRed(2 downto 1) <= Vcnt(5 downto 4); 
-         outGreen(2 downto 1) <= Vcnt(5 downto 4); 
-         outBlue <= Vcnt(5 downto 4); 
-      end if;
+         outRed <= (others => data);
+         outGreen <= (others => Hcnt(0));
+         outBlue <= (others => Vcnt(0));
 
     else
          outRed <= (others => '0'); 
