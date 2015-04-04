@@ -1,21 +1,3 @@
-##############################################################
-#
-# Xilinx Core Generator version 14.7
-# Date: Fri Apr  3 23:29:43 2015
-#
-##############################################################
-#
-#  This file contains the customisation parameters for a
-#  Xilinx CORE Generator IP GUI. It is strongly recommended
-#  that you do not manually alter this file as it may cause
-#  unexpected and unsupported behavior.
-#
-##############################################################
-#
-#  Generated from component: xilinx.com:ip:blk_mem_gen:7.3
-#
-##############################################################
-#
 # BEGIN Project Options
 SET addpads = false
 SET asysymbol = true
@@ -46,7 +28,7 @@ CSET axi_id_width=4
 CSET axi_slave_type=Memory_Slave
 CSET axi_type=AXI4_Full
 CSET byte_size=9
-CSET coe_file=no_coe_file_loaded
+CSET coe_file=../blubb.coe
 CSET collision_warnings=ALL
 CSET component_name=framebuffer
 CSET disable_collision_warnings=false
@@ -59,7 +41,7 @@ CSET enable_b=Always_Enabled
 CSET error_injection_type=Single_Bit_Error_Injection
 CSET fill_remaining_memory_locations=true
 CSET interface_type=Native
-CSET load_init_file=false
+CSET load_init_file=true
 CSET mem_file=no_Mem_file_loaded
 CSET memory_type=True_Dual_Port_RAM
 CSET operating_mode_a=WRITE_FIRST
@@ -101,8 +83,4 @@ CSET write_depth_a=20480
 CSET write_width_a=1
 CSET write_width_b=1
 # END Parameters
-# BEGIN Extra information
-MISC pkg_timestamp=2012-11-19T16:22:25Z
-# END Extra information
 GENERATE
-# CRC: ad8841a7
