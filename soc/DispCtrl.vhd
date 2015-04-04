@@ -144,7 +144,7 @@ end process;
 -- mapping itnernal integers to std_logic_vector ports
   Hcnt <= conv_std_logic_vector(intHcnt,10);
   Vcnt <= conv_std_logic_vector(intVcnt,10);
-  scanPos <= Hcnt(7 downto 0) & Vcnt(6 downto 0);
+  scanPos <= Hcnt(9 downto 2) & Vcnt(8 downto 2);
 
   mixer: process(ck25MHz,intHcnt, intVcnt) 
   begin
