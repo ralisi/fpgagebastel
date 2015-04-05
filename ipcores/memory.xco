@@ -46,7 +46,7 @@ CSET axi_id_width=4
 CSET axi_slave_type=Memory_Slave
 CSET axi_type=AXI4_Full
 CSET byte_size=9
-CSET coe_file=/home/raphael/dev/lm32/ztex_spartan6/soft/LED_Blink/Debug/LED_Blink.coe
+CSET coe_file=../../soft/blink.coe
 CSET collision_warnings=ALL
 CSET component_name=memory
 CSET disable_collision_warnings=false
@@ -101,8 +101,4 @@ CSET write_depth_a=1024
 CSET write_width_a=32
 CSET write_width_b=32
 # END Parameters
-# BEGIN Extra information
-MISC pkg_timestamp=2012-11-19T16:22:25Z
-# END Extra information
 GENERATE
-# CRC: 6e104759
