@@ -4,7 +4,7 @@ use ieee.std_logic_arith.all;
 entity MyTest_vhd is
 port(
 clk_i   : in std_logic
-; reset_n : in std_logic
+; reset : in std_logic
 ; gpioPIO_OUT : out std_logic_vector(7 downto 0);
 
   HS: out std_logic;
@@ -38,7 +38,10 @@ component DispCtrl is
 		  );
 end component;
 
+signal reset_n : std_logic;
+
 begin
+  reset_n <= not reset;
 
 lm32_inst : MyTest
 port map (

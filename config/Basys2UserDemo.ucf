@@ -14,7 +14,7 @@ NET "gpioPIO_OUT<1>" LOC = "m11" ;
 NET "gpioPIO_OUT<0>" LOC = "m5" ;
 
 # button 0
-NET "reset_n" LOC = "g12";
+NET "reset" LOC = "g12";
 
 # Pin assignment for VGA
 NET "HS"   LOC = "J14"  | DRIVE = 2  | PULLUP ; # Bank = 1, Signal name = HSYNC
