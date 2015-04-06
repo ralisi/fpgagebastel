@@ -12,7 +12,7 @@ build/Basys2UserDemo.ngc: config/Basys2UserDemo.prj
 	make -C soft
 	make -C ipcores
 
-build/Basys2UserDemo.ngd: build/Basys2UserDemo.ngc $(NGC)
+build/Basys2UserDemo.ngd: build/Basys2UserDemo.ngc $(NGC) config/Basys2UserDemo.ucf
 	cd build; ngdbuild -uc ../config/Basys2UserDemo.ucf -p xc3s250e-cp132-5 -sd ../ipcores/generated $(notdir $<) $(notdir $@)
 
 build/Basys2UserDemo.pcf: build/Basys2UserDemo.ngd
@@ -21,6 +21,12 @@ build/Basys2UserDemo.pcf: build/Basys2UserDemo.ngd
 build/parout.ncd: build/Basys2UserDemo.pcf
 	cd build; par -w Basys2UserDemo.ncd -pl std -rl std parout.ncd Basys2UserDemo.pcf
 
+build/timing.check: build/parout.par
+	@grep  'All constraints were met' build/parout.par > /dev/null || (grep constraint build/parout.par; false )
+	touch build/timing.check
 
-build/Basys2UserDemo.bit: build/parout.ncd
+build/Basys2UserDemo.bit: build/parout.ncd build/timing.check
 	cd build; bitgen -w -g StartUpClk:JtagClk -g CRC:Enable parout.ncd $(notdir $@) Basys2UserDemo.pcf
+
+clean:
+	rm -rf build

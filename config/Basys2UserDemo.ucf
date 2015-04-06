@@ -1,7 +1,7 @@
 NET "clk_i" LOC = "B8"; # Bank = 0, Signal name = MCLK
-#NET "uclk" LOC = "M6"; # Bank = 2, Signal name = UCLK
 NET "clk_i" CLOCK_DEDICATED_ROUTE = FALSE;
-#NET "uclk" CLOCK_DEDICATED_ROUTE = FALSE;
+NET "clk_i" TNM_NET = "CLOCK_50";
+TIMESPEC    TS_CLOCK_50 = PERIOD CLOCK_50 50 MHz HIGH 50 %;
 
 # Pin assignment for LEDs
 NET "gpioPIO_OUT<7>" LOC = "g1" ;
