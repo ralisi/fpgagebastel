@@ -1,0 +1,6 @@
+ADDRESS_SPACE text RAMB16 [0x00000000:0x00000FFF] 
+    BUS_BLOCK 
+        highmem [31:16] LOC = X0Y1;
+        lowmem  [15:0]  LOC = X0Y0;
+    END_BUS_BLOCK; 
+END_ADDRESS_SPACE; 

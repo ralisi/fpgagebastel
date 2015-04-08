@@ -1,5 +1,5 @@
 verilog work "../components/lm32_top/rtl/verilog/lm32_include.v"
-verilog work "../ipcores/generated/memory.v"
+vhdl work "../components/wb_ebr_ctrl/rtl/vhdl/memory.vhd"
 verilog work "../soc/MyTest.v"
 vhdl work "../ipcores/generated/framebuffer.vhd"
 vhdl work "../soc/DispCtrl.vhd"
