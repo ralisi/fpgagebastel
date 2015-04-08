@@ -1,9 +1,12 @@
 NGC := ipcores/generated/framebuffer.ngc ipcores/generated/memory.ngc
+VHDFILES := $(shell find . -type f -name '*.vhd')
+VFILES := $(shell find . -type f -name '*.v')
+HDLFILES := $(VHDFILES) $(VFILES)
 
 program: build/Basys2UserDemo.bit
 	djtgcfg prog -d Basys2 -i 0 -f $<
 
-build/Basys2UserDemo.ngc: config/Basys2UserDemo.prj
+build/Basys2UserDemo.ngc: config/Basys2UserDemo.prj $(HDLFILES) config/Basys2UserDemo.xst
 	mkdir -p build/xst/projnav.tmp/
 	cd build; xst -intstyle ise -ifn "../config/Basys2UserDemo.xst" -ofn "Basys2UserDemo.syr"
 
