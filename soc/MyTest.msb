@@ -69,7 +69,7 @@
 									
 		<Parm Name="CFG_ICACHE_ENABLED" Text="Instruction Cache Enabled" Type="define" Value="undef"/>
 		<Parm Condition="CFG_ICACHE_ENABLED" Hide="true" Name="CFG_ICACHE_BASE_ADDRESS" Text="Base Address" Type="Integer" Value="0x00000000"/>
-		<Parm Condition="CFG_ICACHE_ENABLED" Hide="true" Name="CFG_ICACHE_LIMIT" Text="Address Limit" Type="Integer" Value="0x00000FFF"/>
+		<Parm Condition="CFG_ICACHE_ENABLED" Hide="true" Name="CFG_ICACHE_LIMIT" Text="Address Limit" Type="Integer" Value="0x00001FFF"/>
 		<Parm Condition="CFG_ICACHE_ENABLED" ListValues="128,256,512,1024" Name="CFG_ICACHE_SETS" Text="Number of Sets" Type="List" Value="512"/>
 		<Parm Condition="CFG_ICACHE_ENABLED" ListValues="1,2" Name="CFG_ICACHE_ASSOCIATIVITY" Text="Set Associativity" Type="List" Value="1"/>
 		<Parm Condition="CFG_ICACHE_ENABLED" ListValues="4,8,16" Name="CFG_ICACHE_BYTES_PER_LINE" Text="Bytes/Cache Line" Type="List" Value="16"/>
@@ -80,7 +80,7 @@
 
 		<Parm Name="CFG_DCACHE_ENABLED" Text="Data Cache Enabled" Type="define" Value="undef"/>
 		<Parm Condition="CFG_DCACHE_ENABLED" Hide="true" Name="CFG_DCACHE_BASE_ADDRESS" Text="Base Address" Type="Integer" Value="0x00000000"/>
-		<Parm Condition="CFG_DCACHE_ENABLED" Hide="true" Name="CFG_DCACHE_LIMIT" Text="Address  Limit" Type="Integer" Value="0x00000FFF"/>
+		<Parm Condition="CFG_DCACHE_ENABLED" Hide="true" Name="CFG_DCACHE_LIMIT" Text="Address  Limit" Type="Integer" Value="0x00001FFF"/>
 		<Parm Condition="CFG_DCACHE_ENABLED" ListValues="128,256,512,1024" Name="CFG_DCACHE_SETS" Text="Number of Sets" Type="List" Value="512"/>
 		<Parm Condition="CFG_DCACHE_ENABLED" ListValues="1,2" Name="CFG_DCACHE_ASSOCIATIVITY" Text="Set Associativity" Type="List" Value="1"/>
 		<Parm Condition="CFG_DCACHE_ENABLED" ListValues="4,8,16" Name="CFG_DCACHE_BYTES_PER_LINE" Text="Bytes/Cache Line" Type="List" Value="16"/>
@@ -338,4 +338,55 @@
 	    <GUI Columns="2" Span="2" Text="WISHBONE Configuration" Widget="Group"/>
 	    <GUI Name="WB_DAT_WIDTH" Port="GPIO" Span="1" Widget="Combo"/>
      </GUIS>
+</Component><Component Access="RW" DRCError="true" Device="All" Help="memory_passthru\document\memory_passthrough.htm" LatticeFamily="All" Name="memory_passthru" PlatformScheme="Shared Bus (Default)" Processor="LM32,LM8,None" Text="memory_passthru" Type="Memory" Ver="3.1">
+  	<MasterSlavePorts>
+    		<SlavePort ACK="MEM_ACK_O" ADR="MEM_ADR_I" BTE="MEM_BTE_I" CTI="MEM_CTI_I" CYC="MEM_CYC_I" DAT1="MEM_DAT_I" DAT2="MEM_DAT_O" ERR="MEM_ERR_O" LOCK="MEM_LOCK_I" Name="target" Prefix="MEM" RTY="MEM_RTY_O" SEL="MEM_SEL_I" STB="MEM_STB_I" WE="MEM_WE_I"><Connections><Connection InstanceName="LM32" MasterPort="D" Priority="0"/></Connections></SlavePort>
+  	</MasterSlavePorts>
+  	<ClockPort Name="CLK_I" UPort="CLK_I"/>
+  	<ResetPort Name="RST_I" UPort="RST_I"/>
+  	<ExternalPorts>
+    		<ExternalPort Name="clk" Type="output" UPort="clk" Width="1"/>
+    		<ExternalPort Name="rst" Type="output" UPort="rst" Width="1"/>
+    		<ExternalPort Name="mem_adr" Type="output" UPort="mem_adr" Width="WB_ADR_WIDTH"/>
+    		<ExternalPort Name="mem_master_data" Type="output" UPort="mem_master_data" Width="WB_DAT_WIDTH"/>
+    		<ExternalPort Name="mem_slave_data" Type="input" UPort="mem_slave_data" Width="WB_DAT_WIDTH"/>
+    		<ExternalPort Name="mem_strb" Type="output" UPort="mem_strb" Width="1"/>
+    		<ExternalPort Name="mem_cyc" Type="output" UPort="mem_cyc" Width="1"/>
+    		<ExternalPort Name="mem_ack" Type="input" UPort="mem_ack" Width="1"/>
+    		<ExternalPort Name="mem_err" Type="input" UPort="mem_err" Width="1"/>
+    		<ExternalPort Name="mem_rty" Type="input" UPort="mem_rty" Width="1"/>
+    		<ExternalPort Name="mem_sel" Type="output" UPort="mem_sel" Width="4"/>
+    		<ExternalPort Name="mem_we" Type="output" UPort="mem_we" Width="1"/>
+    		<ExternalPort Name="mem_bte" Type="output" UPort="mem_bte" Width="2"/>
+    		<ExternalPort Name="mem_cti" Type="output" UPort="mem_cti" Width="3"/>
+    		<ExternalPort Name="mem_lock" Type="output" UPort="mem_lock" Width="1"/>
+  	</ExternalPorts>
+  	<Files>
+    		<TopFile Name="mpassthru"/>
+    		<File Name="../components/memory_passthru/rtl/verilog/memory_passthru.v"/>
+    		<File Name="../components/memory_passthru/rtl/verilog/mpassthru.v"/>
+  	</Files>
+  	<DeviceDriver InitRoutine="" StructName="">
+    		<DDstruct>
+    		</DDstruct>
+    		<Software>
+    		</Software>
+  	</DeviceDriver>
+  	<Parms>
+    		<Parm Name="InstanceName" Text="Instance Name" Type="string" Value="memory_passthru" isiname="true"/>
+    		<Parm Name="BASE_ADDRESS" Text="Base Address" Type="Integer" Value="0x00001000" isba="true"/>
+    		<Parm Enable="true" Name="SIZE" Text="Size" Type="Integer" Value="256" issize="true"/>
+    		<Parm Name="ADDRESS_LOCK" Text="Lock Address" Type="Define" Value="undef"/>
+    		<Parm Name="DISABLE" Text="Disable" Type="Define" Value="undef" isuse="true"/>
+		    <Parm ListValues="8,32" Name="WB_DAT_WIDTH" OType="Integer" Port="MEM" Text="Data Bus Width" Type="List" Value="32" isparm="true"/>
+		    <Parm ListValues="1,4" Name="WB_SEL_WIDTH" OType="Integer" Port="MEM" Text="Byte Select Bus Width" Type="List" Value="4" isparm="false"/>
+		    <Parm Name="WB_ADR_WIDTH" OType="Integer" Port="MEM" Text="WISHBONE Address Bus Width" Type="Integer" Value="32" isparm="true"/>
+  	</Parms>
+  	<GUIS Columns="2">
+    		<GUI Name="InstanceName" Span="1" Widget="Text"/>
+    		<GUI Name="BASE_ADDRESS" Span="1" Widget="Text"/>
+    		<GUI Name="SIZE" Span="1" Widget="Text"/>
+	    	<GUI Columns="2" Span="2" Text="WISHBONE Configuration" Widget="Group"/>
+	    	<GUI Name="WB_DAT_WIDTH" Port="MEM" Span="1" Widget="Combo"/>
+  	</GUIS>
 </Component></Components></Platform>

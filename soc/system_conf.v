@@ -16,4 +16,7 @@
 `define gpioGPIO_WB_ADR_WIDTH 4
 `define gpioOUTPUT_PORTS_ONLY
 `define gpioDATA_WIDTH 32'h8
+`define memory_passthruMEM_WB_DAT_WIDTH 32
+`define MEM_WB_SEL_WIDTH 4
+`define memory_passthruMEM_WB_ADR_WIDTH 32
 `endif // SYSTEM_CONF

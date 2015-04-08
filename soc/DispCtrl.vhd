@@ -39,7 +39,23 @@ entity DispCtrl is
 
         outRed  : out std_logic_vector(2 downto 0); -- final color
         outGreen: out std_logic_vector(2 downto 0);	 -- outputs
-        outBlue : out std_logic_vector(2 downto 1)
+        outBlue : out std_logic_vector(2 downto 1);
+
+  wb_clk : in std_logic;
+  wb_rst : in std_logic;
+  wb_mem_adr : in std_logic_vector(31 downto 0);
+  wb_mem_master_data : in std_logic_vector(31 downto 0);
+  wb_mem_slave_data : out std_logic_vector(31 downto 0);
+  wb_mem_strb : in std_logic;
+  wb_mem_cyc : in std_logic;
+  wb_mem_ack : out std_logic;
+  wb_mem_err : out std_logic;
+  wb_mem_rty : out std_logic;
+  wb_mem_sel : in std_logic_vector(3 downto 0);
+  wb_mem_we : in std_logic;
+  wb_mem_bte : in std_logic_vector(1 downto 0);
+  wb_mem_cti : in std_logic_vector(2 downto 0);
+  wb_mem_lock : in std_logic
 		  );
 end DispCtrl;
 
