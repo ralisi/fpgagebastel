@@ -37,7 +37,7 @@
 //
 //      Project:           MyTest
 //      File:              MyTest.v
-//      Date:              Mi, 8 Apr 2015 02:11:39 MESZ
+//      Date:              Mi, 29 Jul 2015 19:29:41 MESZ
 //      Version:           2.1
 //      Targeted Family:   All
 //
@@ -645,7 +645,7 @@ wire [31:0] memory_passthruMEM_DAT_I;
 assign memory_passthruMEM_DAT_I = SHAREDBUS_DAT_I[31:0];
 wire [3:0] memory_passthruMEM_SEL_I;
 assign memory_passthruMEM_SEL_I = SHAREDBUS_SEL_I;
-assign memory_passthruMEM_en = (SHAREDBUS_ADR_I[31:8] == 24'b000000000000000000010000);
+assign memory_passthruMEM_en = (SHAREDBUS_ADR_I[31:15] == 17'b01000000000000000);
 memory_passthru 
 #(
 .MEM_WB_DAT_WIDTH(32),
