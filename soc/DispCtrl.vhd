@@ -102,7 +102,45 @@ architecture Behavioral of DispCtrl is
   signal data_vec: std_logic_vector(0 downto 0);
   signal data: std_logic;
 
+  type state_type is (wb_idle, wb_read, wb_write);  --type of state machine.
+  signal current_s,next_s: state_type;  --current and next state declaration.
+  signal wbWrite: std_logic_vector(0 downto 0);
+
 begin
+
+  wb_state_proc: process (wb_clk,wb_rst)
+  begin
+    if (wb_rst='1') then
+      current_s <= wb_idle;  --default state on reset.
+    elsif (rising_edge(wb_clk)) then
+      current_s <= next_s;   --state change.
+    end if;
+  end process;
+
+  wb_action: process (current_s,wb_mem_cyc)
+  begin
+    -- default assignments
+    wb_mem_ack <= '0';
+    wb_mem_rty <= '0';
+    wb_mem_err <= '0';
+    wbWrite <= "0";
+    next_s <= wb_idle;
+    case current_s is
+      when wb_idle =>
+        if(wb_mem_cyc='1' and wb_mem_we='1') then
+          next_s <= wb_write;
+          wbWrite <= "1";
+        elsif (wb_mem_cyc='1' and wb_mem_we='0') then
+          next_s <= wb_read;
+        end if;
+      when wb_write =>
+        next_s <= wb_idle;
+        wb_mem_ack <= '1';
+      when wb_read =>
+        next_s <= wb_idle;
+        wb_mem_ack <= '1';
+    end case;
+  end process;
 
 -- divide 50MHz clock to 25MHz
   div2: process(ck)
@@ -150,9 +188,9 @@ end process;
       dina => "0",
       clkb => ck25MHz,
       rstb => '0',
-      web => "0",
+      web => wbWrite,
       --doutb => STD_LOGIC_VECTOR(0 DOWNTO 0),
-      addrb => "000000000000000",
+      addrb => wb_mem_adr(14 downto 0),
       dinb => "0"
     );
   data <= data_vec(0);
@@ -167,8 +205,13 @@ end process;
     if intHcnt < PAL and intVcnt < LAF then	-- in the active screen
 
          outRed <= (others => data);
-         outGreen <= (others => Hcnt(0));
-         outBlue <= (others => Vcnt(0));
+         if current_s=wb_idle then
+           outGreen <= (others => '1');
+            outBlue <= (others => '1');
+         else
+           outGreen <= (others => '0');
+           outBlue <= (others => '0');
+         end if;
 
     else
          outRed <= (others => '0'); 

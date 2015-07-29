@@ -1,4 +1,4 @@
-NGC := ipcores/generated/framebuffer.ngc ipcores/generated/memory.ngc
+NGC := ipcores/generated/framebuffer.ngc
 VHDFILES := $(shell find . -type f -name '*.vhd')
 VFILES := $(shell find . -type f -name '*.v')
 HDLFILES := $(VHDFILES) $(VFILES)
