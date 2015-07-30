@@ -7,19 +7,24 @@ void _irq_entry(void) {
 
 
 
-
-void setScreen(char val) {
-    //memset(fb, val, 0x7fff); return; //does not work yet
-    int i;
-    for (i=0;i<0x7fff;i++)
-        fb[i]=val;
-}
-
 void draw_pixel(int row, int col, int val) {
     int offset = col + 128*row;
     if (offset > 0x7fff)
         return;
-    fb[offset] = 0;
+    fb[offset] = val;
+}
+
+
+void setScreen(char val) {
+    int i;
+    for (i=0;i<0x7fff;i++)
+        fb[i]=~val;
+
+    for(i=0;i<120;i++)
+        memset(&fb[i*128], val, i);
+
+
+    return;
 }
 
 void main(void) {
