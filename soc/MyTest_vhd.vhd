@@ -11,7 +11,10 @@ clk_i   : in std_logic
   VS: out std_logic;
   outRed  : out std_logic_vector(2 downto 0);
   outGreen: out std_logic_vector(2 downto 0);
-  outBlue : out std_logic_vector(2 downto 1)
+  outBlue : out std_logic_vector(2 downto 1);
+
+  an   : out   std_logic_vector (3 downto 0);
+  seg  : out   std_logic_vector (6 downto 0)
 );
 end MyTest_vhd;
 
@@ -50,6 +53,9 @@ component DispCtrl is
         outRed  : out std_logic_vector(2 downto 0); -- final color
         outGreen: out std_logic_vector(2 downto 0);	 -- outputs
         outBlue : out std_logic_vector(2 downto 1);
+
+      an : out std_logic_vector (3 downto 0);
+      seg : out std_logic_vector (6 downto 0);
 
   wb_clk : in std_logic;
   wb_rst : in std_logic;
@@ -130,6 +136,8 @@ port map (
     wb_mem_cti  => memory_passthrumem_cti,
     wb_mem_lock  => memory_passthrumem_lock,
 
+    an => an,
+    seg => seg,
     HS => HS,
     VS => VS,
     outRed => outRed,

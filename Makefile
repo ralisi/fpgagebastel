@@ -4,7 +4,7 @@ VFILES := $(shell find . -type f -name '*.v')
 HDLFILES := $(VHDFILES) $(VFILES)
 
 program: build/Basys2UserDemo.bit
-	djtgcfg prog -d Basys2 -i 0 -f $<
+	make -C soft
 
 build/Basys2UserDemo.ngc: config/Basys2UserDemo.prj $(HDLFILES) config/Basys2UserDemo.xst
 	mkdir -p build/xst/projnav.tmp/

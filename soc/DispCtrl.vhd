@@ -41,6 +41,9 @@ entity DispCtrl is
         outGreen: out std_logic_vector(2 downto 0);	 -- outputs
         outBlue : out std_logic_vector(2 downto 1);
 
+    an   : out   std_logic_vector (3 downto 0);
+    seg  : out   std_logic_vector (6 downto 0);
+
   wb_clk : in std_logic;
   wb_rst : in std_logic;
   wb_mem_adr : in std_logic_vector(31 downto 0);
@@ -60,6 +63,16 @@ entity DispCtrl is
 end DispCtrl;
 
 architecture Behavioral of DispCtrl is
+
+  component SevenSegment is
+    port (
+      ck50MHz : in  STD_LOGIC;
+      we : in std_logic;
+      segment_display : in std_logic_vector (15 downto 0);
+      an   : out   std_logic_vector (3 downto 0);
+      seg  : out   std_logic_vector (6 downto 0)
+    );
+  end component;
 
 -- constants for Synchro module
   constant PAL:integer:=640;		--Pixels/Active Line (pixels)
@@ -105,19 +118,31 @@ architecture Behavioral of DispCtrl is
   type state_type is (wb_idle, wb_read, wb_write);  --type of state machine.
   signal current_s,next_s: state_type;  --current and next state declaration.
   signal wbWrite, wbWriteDat: std_logic_vector(0 downto 0);
+  signal debugData: std_logic_vector(15 downto 0);
+  signal debugEn: std_logic;
 
 begin
 
+  debugger: SevenSegment port map (
+      ck50MHz => wb_clk,
+      we => wbWrite(0),
+      segment_display => wb_mem_adr(15 downto 0),
+      an => an,
+      seg => seg
+    );
+
   wb_state_proc: process (wb_clk,wb_rst)
   begin
-    if (wb_rst='1') then
-      current_s <= wb_idle;  --default state on reset.
-    elsif (rising_edge(wb_clk)) then
-      current_s <= next_s;   --state change.
+    if (rising_edge(wb_clk)) then
+      if (wb_rst='1') then
+        current_s <= wb_idle;  --sync reset
+      else
+        current_s <= next_s;   --state change.
+      end if;
     end if;
   end process;
 
-  wb_action: process (current_s,wb_mem_cyc,wb_mem_master_data)
+  wb_action: process (current_s,wb_mem_strb,wb_mem_cyc,wb_mem_we,wb_mem_master_data)
   begin
     -- default assignments
     wb_mem_ack <= '0';
@@ -128,10 +153,13 @@ begin
     next_s <= wb_idle;
     case current_s is
       when wb_idle =>
-        if(wb_mem_cyc='1' and wb_mem_we='1') then
-          next_s <= wb_write;
-        elsif (wb_mem_cyc='1' and wb_mem_we='0') then
-          next_s <= wb_read;
+        if(wb_mem_strb='1' and wb_mem_cyc='1') then
+          -- is active
+          if (wb_mem_we='1') then
+            next_s <= wb_write;
+          else
+            next_s <= wb_read;
+          end if;
         end if;
       when wb_write =>
         next_s <= wb_idle;
@@ -188,7 +216,7 @@ end process;
       douta => data_vec,
       addra => scanPos,
       dina => "0",
-      clkb => ck25MHz,
+      clkb => wb_clk,
       rstb => '0',
       web => wbWrite,
       --doutb => STD_LOGIC_VECTOR(0 DOWNTO 0),
@@ -202,7 +230,7 @@ end process;
   Vcnt <= conv_std_logic_vector(intVcnt,10);
   scanPos <= Hcnt(9 downto 2) & Vcnt(8 downto 2);
 
-  mixer: process(ck25MHz,intHcnt, intVcnt) 
+  mixer: process(ck25MHz,intHcnt, intVcnt, data, current_s)
   begin
     if intHcnt < PAL and intVcnt < LAF then	-- in the active screen
 

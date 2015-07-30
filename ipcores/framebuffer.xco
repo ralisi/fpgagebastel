@@ -23,7 +23,7 @@ SELECT Block_Memory_Generator xilinx.com:ip:blk_mem_gen:7.3
 # BEGIN Parameters
 CSET additional_inputs_for_power_estimation=false
 CSET algorithm=Minimum_Area
-CSET assume_synchronous_clk=true
+CSET assume_synchronous_clk=false
 CSET axi_id_width=4
 CSET axi_slave_type=Memory_Slave
 CSET axi_type=AXI4_Full
