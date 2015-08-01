@@ -1,7 +1,7 @@
 COREGENPROJECT:=coregen.cgp
 
 
-all: generated/memory.v generated/memory.ngc generated/framebuffer.vhd generated/framebuffer.ngc
+all: generated/framebuffer.vhd generated/framebuffer.ngc
 
 clean:
 	rm -rf coregen_tmp generated
