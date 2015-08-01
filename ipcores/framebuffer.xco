@@ -57,7 +57,7 @@ CSET port_b_enable_rate=100
 CSET port_b_write_rate=50
 CSET primitive=8kx2
 CSET read_width_a=1
-CSET read_width_b=1
+CSET read_width_b=4
 CSET register_porta_input_of_softecc=false
 CSET register_porta_output_of_memory_core=false
 CSET register_porta_output_of_memory_primitives=false
@@ -81,6 +81,6 @@ CSET use_rsta_pin=true
 CSET use_rstb_pin=true
 CSET write_depth_a=20480
 CSET write_width_a=1
-CSET write_width_b=1
+CSET write_width_b=4
 # END Parameters
 GENERATE

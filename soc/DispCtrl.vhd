@@ -106,18 +106,19 @@ architecture Behavioral of DispCtrl is
       clkb : IN STD_LOGIC;
       rstb : IN STD_LOGIC;
       web : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-      addrb : IN STD_LOGIC_VECTOR(14 DOWNTO 0);
-      dinb : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-      doutb : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
+      addrb : IN STD_LOGIC_VECTOR(12 DOWNTO 0);
+      dinb : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+      doutb : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
     );
   END component;
   signal scanPos: std_logic_vector(14 downto 0);
   signal data_vec: std_logic_vector(0 downto 0);
   signal data: std_logic;
+  signal dataRead, wbWriteDat: std_logic_vector(3 downto 0);
 
   type state_type is (wb_idle, wb_read, wb_write);  --type of state machine.
   signal current_s,next_s: state_type;  --current and next state declaration.
-  signal wbWrite, wbWriteDat: std_logic_vector(0 downto 0);
+  signal wbWrite: std_logic_vector(0 downto 0);
   signal debugData: std_logic_vector(15 downto 0);
   signal debugEn: std_logic;
 
@@ -126,10 +127,11 @@ begin
   debugger: SevenSegment port map (
       ck50MHz => wb_clk,
       we => wbWrite(0),
-      segment_display => wb_mem_adr(15 downto 0),
+      segment_display => debugData,
       an => an,
       seg => seg
     );
+  debugData <= wb_mem_sel & wb_mem_adr(11 downto 0);
 
   wb_state_proc: process (wb_clk,wb_rst)
   begin
@@ -142,14 +144,14 @@ begin
     end if;
   end process;
 
-  wb_action: process (current_s,wb_mem_strb,wb_mem_cyc,wb_mem_we,wb_mem_master_data)
+  wb_action: process (current_s,wb_mem_strb,wb_mem_cyc,wb_mem_we,wb_mem_master_data,dataRead,wb_mem_sel)
   begin
     -- default assignments
     wb_mem_ack <= '0';
     wb_mem_rty <= '0';
     wb_mem_err <= '0';
     wbWrite <= "0";
-    wbWriteDat <= "0";
+    wbWriteDat <= "1010";
     next_s <= wb_idle;
     case current_s is
       when wb_idle =>
@@ -164,7 +166,10 @@ begin
       when wb_write =>
         next_s <= wb_idle;
         wbWrite <= "1";
-        wbWriteDat <= wb_mem_master_data(0 downto 0);
+        wbWriteDat(0) <= (wb_mem_sel(3) and wb_mem_master_data( 0)) or ((not wb_mem_sel(3)) and dataRead(0));
+        wbWriteDat(1) <= (wb_mem_sel(2) and wb_mem_master_data( 8)) or ((not wb_mem_sel(2)) and dataRead(1));
+        wbWriteDat(2) <= (wb_mem_sel(1) and wb_mem_master_data(16)) or ((not wb_mem_sel(1)) and dataRead(2));
+        wbWriteDat(3) <= (wb_mem_sel(0) and wb_mem_master_data(24)) or ((not wb_mem_sel(0)) and dataRead(3));
         wb_mem_ack <= '1';
       when wb_read =>
         next_s <= wb_idle;
@@ -219,8 +224,8 @@ end process;
       clkb => wb_clk,
       rstb => '0',
       web => wbWrite,
-      --doutb => STD_LOGIC_VECTOR(0 DOWNTO 0),
-      addrb => wb_mem_adr(14 downto 0),
+      doutb => dataRead,
+      addrb => wb_mem_adr(14 downto 2),
       dinb => wbWriteDat
     );
   data <= data_vec(0);
