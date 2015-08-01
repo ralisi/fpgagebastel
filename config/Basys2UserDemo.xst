@@ -5,7 +5,7 @@ run
 -ifmt mixed
 -ofn Basys2UserDemo
 -ofmt NGC
--p xc3s250e-5-cp132
+-p xc3s250e-4-cp132
 -top MyTest_vhd
 -opt_mode Speed
 -opt_level 1

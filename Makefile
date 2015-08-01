@@ -16,7 +16,7 @@ build/Basys2UserDemo.ngc: config/Basys2UserDemo.prj $(HDLFILES) config/Basys2Use
 	make -C ipcores
 
 build/Basys2UserDemo.ngd: build/Basys2UserDemo.ngc $(NGC) config/Basys2UserDemo.ucf
-	cd build; ngdbuild -uc ../config/Basys2UserDemo.ucf -p xc3s250e-cp132-5 -sd ../ipcores/generated $(notdir $<) $(notdir $@)
+	cd build; ngdbuild -uc ../config/Basys2UserDemo.ucf -sd ../ipcores/generated $(notdir $<) $(notdir $@)
 
 build/Basys2UserDemo.pcf: build/Basys2UserDemo.ngd
 	cd build; map -detail -pr b $(notdir $<)
