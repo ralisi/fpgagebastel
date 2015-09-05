@@ -3,6 +3,11 @@ NET "clk_i" CLOCK_DEDICATED_ROUTE = FALSE;
 NET "clk_i" TNM_NET = "CLOCK_50";
 TIMESPEC    TS_CLOCK_50 = PERIOD CLOCK_50 50 MHz HIGH 50 %;
 
+NET "clk_ext_i" LOC = "M6"; # Bank = 2, Signal name = UCLK
+NET "clk_ext_i" CLOCK_DEDICATED_ROUTE = FALSE;
+NET "clk_ext_i" TNM_NET = "CLOCK_25";
+TIMESPEC    TS_CLOCK_25 = PERIOD CLOCK_25 25 MHz HIGH 50 %;
+
 # Pin assignment for LEDs
 NET "gpioPIO_OUT<7>" LOC = "g1" ;
 NET "gpioPIO_OUT<6>" LOC = "p4" ;

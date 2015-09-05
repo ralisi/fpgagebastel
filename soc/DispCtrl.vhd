@@ -32,6 +32,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity DispCtrl is
   Port (ck: in std_logic;  -- 50MHz
+        ck25MHz: in std_logic; -- stable signal for VGA output
 --        Hcnt: in std_logic_vector(9 downto 0);      -- horizontal counter
 --        Vcnt: in std_logic_vector(9 downto 0);      -- verical counter
         HS: out std_logic;					-- horizontal synchro signal					
@@ -92,8 +93,6 @@ architecture Behavioral of DispCtrl is
   signal Vcnt: std_logic_vector(9 downto 0);      -- verical counter
   signal intHcnt: integer range 0 to 800-1; --PLD-1 - horizontal counter
   signal intVcnt: integer range 0 to 521-1; -- LFD-1 - verical counter
-
-  signal ck25MHz: std_logic;		-- ck 25MHz
 
   component framebuffer IS
     PORT (
@@ -176,14 +175,6 @@ begin
         wb_mem_ack <= '1';
     end case;
   end process;
-
--- divide 50MHz clock to 25MHz
-  div2: process(ck)
-  begin
-    if ck'event and ck = '1' then
-	   ck25MHz <= not ck25MHz; 
-    end if;
-  end process;	 
 
   syncro: process (ck25MHz)
   begin

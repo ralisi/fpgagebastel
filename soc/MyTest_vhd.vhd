@@ -4,6 +4,7 @@ use ieee.std_logic_arith.all;
 entity MyTest_vhd is
 port(
 clk_i   : in std_logic
+; clk_ext_i   : in std_logic
 ; reset : in std_logic
 ; gpioPIO_OUT : out std_logic_vector(7 downto 0);
 
@@ -45,6 +46,7 @@ component MyTest
 
 component DispCtrl is
   Port (ck: in std_logic;  -- 50MHz
+        ck25MHz: in std_logic;
 --        Hcnt: in std_logic_vector(9 downto 0);      -- horizontal counter
 --        Vcnt: in std_logic_vector(9 downto 0);      -- verical counter
         HS: out std_logic;					-- horizontal synchro signal					
@@ -119,6 +121,7 @@ port map (
 
   vga: DispCtrl port map (
     ck => clk_i,
+    ck25MHz => clk_ext_i,
 
     wb_clk  => memory_passthruclk,
     wb_rst  => memory_passthrurst,
