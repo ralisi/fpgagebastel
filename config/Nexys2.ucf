@@ -53,3 +53,18 @@ NET "an<0>" LOC= "F17"; # Bank = 1 , Pin name = IO_L19N_1 , Type = I/O , Sch nam
 NET "an<1>" LOC= "H17"; # Bank = 1 , Pin name = IO_L16N_1/A0 , Type = DUAL , Sch name = AN1
 NET "an<2>" LOC= "C18"; # Bank = 1 , Pin name = IO_L24P_1/LDC1 , Type = DUAL , Sch name = AN2
 NET "an<3>" LOC= "F15"; # Bank = 1 , Pin name = IO_L21P_1 , Type = I/O , Sch name = AN3
+
+# EPP interface
+NET "EppDB<0>"       LOC = "R14";     # Bank = 2, Pin name = IO_L24N_2/A20, Type = DUAL,                    Sch name = U-FD0
+NET "EppDB<1>"       LOC = "R13";     # Bank = 2, Pin name = IO_L22N_2/A22, Type = DUAL,                    Sch name = U-FD1
+NET "EppDB<2>"       LOC = "P13";     # Bank = 2, Pin name = IO_L22P_2/A23, Type = DUAL,                    Sch name = U-FD2
+NET "EppDB<3>"       LOC = "T12";     # Bank = 2, Pin name = IO_L20P_2, Type = I/O,                         Sch name = U-FD3
+NET "EppDB<4>"       LOC = "N11";     # Bank = 2, Pin name = IO_L18N_2, Type = I/O,                         Sch name = U-FD4
+NET "EppDB<5>"       LOC = "R11";     # Bank = 2, Pin name = IO, Type = I/O,                                Sch name = U-FD5
+NET "EppDB<6>"       LOC = "P10";     # Bank = 2, Pin name = IO_L15N_2/D1/GCLK3, Type = DUAL/GCLK,          Sch name = U-FD6
+NET "EppDB<7>"       LOC = "R10";     # Bank = 2, Pin name = IO_L15P_2/D2/GCLK2, Type = DUAL/GCLK,          Sch name = U-FD7
+
+NET "EppWR"       LOC = "V16";     # Bank = 2, Pin name = IP, Type = INPUT,                              Sch name = U-FLAGC
+NET "EppAstb"     LOC = "V14";     # Bank = 2, Pin name = IP_L23P_2, Type = INPUT,                       Sch name = U-FLAGA
+NET "EppDstb"     LOC = "U14";     # Bank = 2, Pin name = IP_L23N_2, Type = INPUT,                       Sch name = U-FLAGB
+NET "EppWait"     LOC = "N9";      # Bank = 2, Pin name = IO_L12P_2/D7/GCLK12, Type = DUAL/GCLK,         Sch name = U-SLRD

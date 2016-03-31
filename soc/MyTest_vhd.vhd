@@ -16,6 +16,12 @@ clk_i   : in std_logic
 
   an   : out   std_logic_vector (3 downto 0);
   seg  : out   std_logic_vector (6 downto 0)
+
+      ;EppAstb : in    std_logic
+      ;EppDstb : in    std_logic
+      ;EppWR   : in    std_logic
+      ;EppWait : out   std_logic
+      ;EppDB   : inout std_logic_vector(7 downto 0)
 );
 end MyTest_vhd;
 
@@ -76,6 +82,21 @@ component DispCtrl is
   wb_mem_lock : in std_logic
 		  );
 end component;
+
+component epp_interface is
+   port(
+      Clk     : in    std_logic
+
+      ;EppAstb : in    std_logic
+      ;EppDstb : in    std_logic
+      ;EppWR   : in    std_logic
+      ;EppWait : out   std_logic
+      ;EppDB   : inout std_logic_vector(7 downto 0)
+
+      ;reg0 : in    std_logic_vector(7 downto 0)
+      ;reg1 : in    std_logic_vector(7 downto 0)
+      );
+   end component;
 
 signal reset_n : std_logic;
 signal memory_passthruclk : std_logic;
@@ -147,6 +168,20 @@ port map (
     outGreen => outGreen,
     outBlue => outBlue
   );
+
+epp_inst : epp_interface
+port map (
+   Clk      => clk_i
+
+   ,EppAstb => EppAstb
+   ,EppDstb => EppDstb
+   ,EppWR   => EppWR
+   ,EppWait => EppWait
+   ,EppDB   => EppDB
+
+   ,reg0 => X"23"
+   ,reg1 => X"42"
+   );
 
 end MyTest_vhd_a;
 
