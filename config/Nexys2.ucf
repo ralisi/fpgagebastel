@@ -1,0 +1,55 @@
+# clock pin for Nexys 2 Board 
+NET "clk_i" LOC= "B8"; # Bank = 0 , Pin name = IP_L13P_0/GCLK8 , Type = GCLK , Sch name = GCLK0
+NET "clk_i" CLOCK_DEDICATED_ROUTE = FALSE;
+NET "clk_i" TNM_NET = "CLOCK_50";
+TIMESPEC    TS_CLOCK_50 = PERIOD CLOCK_50 50 MHz HIGH 50 %;
+
+NET "clk_ext_i" LOC = "U9"; # Bank = 2, Signal name = UCLK
+NET "clk_ext_i" CLOCK_DEDICATED_ROUTE = FALSE;
+NET "clk_ext_i" TNM_NET = "CLOCK_25";
+TIMESPEC    TS_CLOCK_25 = PERIOD CLOCK_25 25 MHz HIGH 50 %;
+
+# Pin assignment for LEDs
+NET "gpioPIO_OUT<0>" LOC= "J14"; # Bank = 1 , Pin name = IO_L14N_1/A3/RHCLK7 , Type = RHCLK/DUAL , Sch name = JD10/LD0
+NET "gpioPIO_OUT<1>" LOC= "J15"; # Bank = 1 , Pin name = IO_L14P_1/A4/RHCLK6 , Type = RHCLK/DUAL , Sch name = JD9/LD1
+NET "gpioPIO_OUT<2>" LOC= "K15"; # Bank = 1 , Pin name = IO_L12P_1/A8/RHCLK2 , Type = RHCLK/DUAL , Sch name = JD8/LD2 
+NET "gpioPIO_OUT<3>" LOC= "K14"; # Bank = 1 , Pin name = IO_L12N_1/A7/RHCLK3/TRDY1 , Type = RHCLK/DUAL , Sch name = JD7/LD3 
+NET "gpioPIO_OUT<4>" LOC= "E16"; # Bank = 1 , Pin name = N.C. , Type = N.C. , Sch name = LD4? other than s3e500
+NET "gpioPIO_OUT<5>" LOC= "P16"; # Bank = 1 , Pin name = N.C. , Type = N.C. , Sch name = LD5? other than s3e500
+NET "gpioPIO_OUT<6>" LOC= "E4"; # Bank = 3 , Pin name = N.C. , Type = N.C. , Sch name = LD6? other than s3e500
+NET "gpioPIO_OUT<7>" LOC= "P4"; # Bank = 3 , Pin name = N.C. , Type = N.C. , Sch name = LD7? other than s3e500
+
+
+
+# button 0
+NET "reset"      LOC = "B18";     # Bank = 1, Pin name = IP, Type = INPUT,                              Sch name = BTN0
+
+
+# Pin assignment for VGA
+NET "HS" LOC= "T4" | PULLUP; # Bank = 2 , Pin name = IO_L03N_2/MOSI/CSI_B , Type = DUAL , Sch name = HSYNC
+NET "VS" LOC= "U3" | PULLUP; # Bank = 2 , Pin name = IO_L01P_2/CSO_B , Type = DUAL , Sch name = VSYNC
+
+NET "OutRed<0>" LOC= "R9"; # Bank = 2 , Pin name = IO/D5 , Type = DUAL , Sch name = RED0
+NET "OutRed<1>" LOC= "T8"; # Bank = 2 , Pin name = IO_L10N_2 , Type = I/O , Sch name = RED1
+NET "OutRed<2>" LOC= "R8"; # Bank = 2 , Pin name = IO_L10P_2 , Type = I/O , Sch name = RED2
+NET "OutGreen<0>" LOC= "N8"; # Bank = 2 , Pin name = IO_L09N_2 , Type = I/O , Sch name = GRN0
+NET "OutGreen<1>" LOC= "P8"; # Bank = 2 , Pin name = IO_L09P_2 , Type = I/O , Sch name = GRN1
+NET "OutGreen<2>" LOC= "P6"; # Bank = 2 , Pin name = IO_L05N_2 , Type = I/O , Sch name = GRN2
+NET "OutBlue<1>" LOC= "U5"; # Bank = 2 , Pin name = IO/VREF_2 , Type = VREF , Sch name = BLU1
+NET "OutBlue<2>" LOC= "U4"; # Bank = 2 , Pin name = IO_L03P_2/DOUT/BUSY , Type = DUAL , Sch name = BLU2
+
+
+
+# Connected to Basys2 onBoard 7seg display
+NET "seg<0>" LOC= "L18"; # Bank = 1 , Pin name = IO_L10P_1 , Type = I/O , Sch name = CA
+NET "seg<1>" LOC= "F18"; # Bank = 1 , Pin name = IO_L19P_1 , Type = I/O , Sch name = CB
+NET "seg<2>" LOC= "D17"; # Bank = 1 , Pin name = IO_L23P_1/HDC , Type = DUAL , Sch name = CC
+NET "seg<3>" LOC= "D16"; # Bank = 1 , Pin name = IO_L23N_1/LDC0 , Type = DUAL , Sch name = CD
+NET "seg<4>" LOC= "G14"; # Bank = 1 , Pin name = IO_L20P_1 , Type = I/O , Sch name = CE
+NET "seg<5>" LOC= "J17"; # Bank = 1 , Pin name = IO_L13P_1/A6/RHCLK4/IRDY1 , Type = RHCLK/DUAL , Sch name = CF
+NET "seg<6>" LOC= "H14"; # Bank = 1 , Pin name = IO_L17P_1 , Type = I/O , Sch name = CG
+
+NET "an<0>" LOC= "F17"; # Bank = 1 , Pin name = IO_L19N_1 , Type = I/O , Sch name = AN0
+NET "an<1>" LOC= "H17"; # Bank = 1 , Pin name = IO_L16N_1/A0 , Type = DUAL , Sch name = AN1
+NET "an<2>" LOC= "C18"; # Bank = 1 , Pin name = IO_L24P_1/LDC1 , Type = DUAL , Sch name = AN2
+NET "an<3>" LOC= "F15"; # Bank = 1 , Pin name = IO_L21P_1 , Type = I/O , Sch name = AN3

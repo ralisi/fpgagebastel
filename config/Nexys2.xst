@@ -3,9 +3,9 @@ set -xsthdpdir "xst"
 run
 -ifn ../config/MyProject.prj
 -ifmt mixed
--ofn Basys2UserDemo
+-ofn Nexys2
 -ofmt NGC
--p xc3s250e-4-cp132
+-p xc3s1200e-4-fg320
 -top MyTest_vhd
 -opt_mode Speed
 -opt_level 1
