@@ -37,7 +37,7 @@
 //
 //      Project:           MyTest
 //      File:              MyTest_inst.v
-//      Date:              Mi, 29 Jul 2015 19:29:41 MESZ
+//      Date:              Sa, 2 Apr 2016 00:30:12 MESZ
 //      Version:           2.1
 //      Targeted Family:   EC
 //
@@ -64,4 +64,19 @@ MyTest_vhd MyTest_u (
 , .memory_passthrumem_bte(memory_passthrumem_bte) // [1:0] 
 , .memory_passthrumem_cti(memory_passthrumem_cti) // [2:0] 
 , .memory_passthrumem_lock(memory_passthrumem_lock) // 
+, .master_passthrumstr_adr(master_passthrumstr_adr) // [32-1:0]
+, .master_passthrumstr_data_to_slv(master_passthrumstr_data_to_slv) // [32-1:0]
+, .master_passthrumstr_we(master_passthrumstr_we) // 
+, .master_passthrumstr_stb(master_passthrumstr_stb) // 
+, .master_passthrumstr_cyc(master_passthrumstr_cyc) // 
+, .master_passthrumstr_lock(master_passthrumstr_lock) // 
+, .master_passthrumstr_cti(master_passthrumstr_cti) // [2:0] 
+, .master_passthrumstr_sel(master_passthrumstr_sel) // [4-1:0]
+, .master_passthrumstr_bte(master_passthrumstr_bte) // [1:0] 
+, .master_passthruclk(master_passthruclk) // 
+, .master_passthrurst(master_passthrurst) // 
+, .master_passthrumstr_data_from_slv(master_passthrumstr_data_from_slv) // [32-1:0]
+, .master_passthrumstr_ack_from_slv(master_passthrumstr_ack_from_slv) // 
+, .master_passthrumstr_rty_from_slv(master_passthrumstr_rty_from_slv) // 
+, .master_passthrumstr_err_from_slv(master_passthrumstr_err_from_slv) // 
 );

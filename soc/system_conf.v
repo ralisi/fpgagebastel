@@ -22,4 +22,7 @@
 `define memory_passthruMEM_WB_DAT_WIDTH 32
 `define MEM_WB_SEL_WIDTH 4
 `define memory_passthruMEM_WB_ADR_WIDTH 32
+`define master_passthruM_WB_DAT_WIDTH 32
+`define M_WB_SEL_WIDTH 4
+`define master_passthruM_WB_ADR_WIDTH 32
 `endif // SYSTEM_CONF

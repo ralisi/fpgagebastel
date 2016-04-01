@@ -37,7 +37,7 @@
 //
 //      Project:           MyTest
 //      File:              MyTest.v
-//      Date:              Mi, 29 Jul 2015 19:29:41 MESZ
+//      Date:              Sa, 2 Apr 2016 00:30:12 MESZ
 //      Version:           2.1
 //      Targeted Family:   All
 //
@@ -45,12 +45,13 @@
 
 `include "system_conf.v"
 
-module arbiter2
+module arbiter3
 #(
 	parameter MAX_DAT_WIDTH = 32,
 	parameter WBS_DAT_WIDTH = 32,
 	parameter WBM0_DAT_WIDTH = 32,
-	parameter WBM1_DAT_WIDTH = 32
+	parameter WBM1_DAT_WIDTH = 32,
+	parameter WBM2_DAT_WIDTH = 32
 )(
 	// Multiple Master Port0
 	WBM0_ADR_O,
@@ -80,6 +81,20 @@ module arbiter2
 	WBM1_LOCK_O,
 	WBM1_CYC_O,
 	WBM1_STB_O,
+	// Multiple Master Port2
+	WBM2_ADR_O,
+	WBM2_DAT_O,
+	WBM2_DAT_I,
+	WBM2_SEL_O,
+	WBM2_WE_O,
+	WBM2_ACK_I,
+	WBM2_ERR_I,
+	WBM2_RTY_I,
+	WBM2_CTI_O,
+	WBM2_BTE_O,
+	WBM2_LOCK_O,
+	WBM2_CYC_O,
+	WBM2_STB_O,
 	// Single Slave Port
 	WBS_ADR_I,
 	WBS_DAT_I,
@@ -126,6 +141,19 @@ input [1:0]WBM1_BTE_O;
 input  WBM1_LOCK_O;
 input  WBM1_CYC_O;
 input  WBM1_STB_O;
+input [31:0]WBM2_ADR_O;
+input [WBM2_DAT_WIDTH-1:0] WBM2_DAT_O;
+output [WBM2_DAT_WIDTH-1:0] WBM2_DAT_I;
+input [WBM2_DAT_WIDTH/8-1:0] WBM2_SEL_O;
+input  WBM2_WE_O;
+output  WBM2_ACK_I;
+output  WBM2_ERR_I;
+output  WBM2_RTY_I;
+input [2:0]WBM2_CTI_O;
+input [1:0]WBM2_BTE_O;
+input  WBM2_LOCK_O;
+input  WBM2_CYC_O;
+input  WBM2_STB_O;
 output [31:0]WBS_ADR_I;
 output [WBS_DAT_WIDTH-1:0] WBS_DAT_I;
 input [WBS_DAT_WIDTH-1:0] WBS_DAT_O;
@@ -145,12 +173,15 @@ wire [MAX_DAT_WIDTH/8-1:0] WBM0_SEL_O_INT;
 wire [MAX_DAT_WIDTH-1:0] WBM1_DAT_I_INT;
 wire [MAX_DAT_WIDTH-1:0] WBM1_DAT_O_INT;
 wire [MAX_DAT_WIDTH/8-1:0] WBM1_SEL_O_INT;
+wire [MAX_DAT_WIDTH-1:0] WBM2_DAT_I_INT;
+wire [MAX_DAT_WIDTH-1:0] WBM2_DAT_O_INT;
+wire [MAX_DAT_WIDTH/8-1:0] WBM2_SEL_O_INT;
 wire [MAX_DAT_WIDTH-1:0] WBS_DAT_O_INT;
 wire [MAX_DAT_WIDTH-1:0] WBS_DAT_I_INT;
 wire [MAX_DAT_WIDTH/8-1:0] WBS_SEL_I_INT;
 
 generate
-	if ((WBS_DAT_WIDTH == 8) && ((WBM0_DAT_WIDTH == 32) || (WBM1_DAT_WIDTH == 32))) begin
+	if ((WBS_DAT_WIDTH == 8) && ((WBM0_DAT_WIDTH == 32) || (WBM1_DAT_WIDTH == 32) || (WBM2_DAT_WIDTH == 32))) begin
 		assign WBS_DAT_I = ((WBS_ADR_I[1:0] == 2'b00)
 			? WBS_DAT_I_INT[31:24]
 			: ((WBS_ADR_I[1:0] == 2'b01)
@@ -240,8 +271,40 @@ generate
 	end
 endgenerate
 
+generate
+	if ((WBS_DAT_WIDTH == 32) && (WBM2_DAT_WIDTH == 8)) begin
+		assign WBM2_DAT_I = ((WBM2_ADR_O[1:0] == 2'b00)
+			? WBM2_DAT_I_INT[31:24]
+			: ((WBM2_ADR_O[1:0] == 2'b01)
+			? WBM2_DAT_I_INT[23:16]
+			: ((WBM2_ADR_O[1:0] == 2'b10)
+			? WBM2_DAT_I_INT[15:8]
+			: WBM2_DAT_I_INT[7:0]
+			)));
+		assign WBM2_DAT_O_INT = {4{WBM2_DAT_O}};
+		assign WBM2_SEL_O_INT = ((WBM2_ADR_O[1:0] == 2'b00)
+			? {WBM2_SEL_O, 3'b000}
+			: ((WBM2_ADR_O[1:0] == 2'b01)
+			? {1'b0, WBM2_SEL_O, 2'b00}
+			: ((WBM2_ADR_O[1:0] == 2'b10)
+			? {2'b00, WBM2_SEL_O, 1'b0}
+			: {3'b000, WBM2_SEL_O}
+			)));
+	end
+	else if ((WBS_DAT_WIDTH == 8) && (MAX_DAT_WIDTH == 32)) begin
+		assign WBM2_DAT_I = WBM2_DAT_I_INT;
+		assign WBM2_SEL_O_INT = {4{WBM2_SEL_O}};
+		assign WBM2_DAT_O_INT = {4{WBM2_DAT_O}};
+	end
+	else begin
+		assign WBM2_DAT_I = WBM2_DAT_I_INT;
+		assign WBM2_SEL_O_INT = WBM2_SEL_O;
+		assign WBM2_DAT_O_INT = WBM2_DAT_O;
+	end
+endgenerate
 
-reg [2-1:0] 		selected; // which master is selected.
+
+reg [3-1:0] 		selected; // which master is selected.
 reg locked;
 always @(posedge clk or posedge reset)
 begin
@@ -252,22 +315,32 @@ begin
 	else begin
 		if (selected == 0) begin
 			if (WBM0_STB_O) begin
-				selected <= #1 2'd1;
+				selected <= #1 3'd1;
 				locked   <= #1 WBM0_LOCK_O;
 			end
 			else if (WBM1_STB_O) begin
-				selected <= #1 2'd2;
+				selected <= #1 3'd2;
 				locked   <= #1 WBM1_LOCK_O;
 			end
+			else if (WBM2_STB_O) begin
+				selected <= #1 3'd3;
+				locked   <= #1 WBM2_LOCK_O;
+			end
 		end
-		else if (selected == 2'd1) begin
+		else if (selected == 3'd1) begin
 			if ((WBS_ACK_O || WBS_ERR_O || locked) && ((WBM0_CTI_O == 3'b000) || (WBM0_CTI_O == 3'b111) || locked) && !WBM0_LOCK_O) begin
 				selected <= #1 0;
 				locked <= #1 0;
 			end
 		end
-		else if (selected == 2'd2) begin
+		else if (selected == 3'd2) begin
 			if ((WBS_ACK_O || WBS_ERR_O || locked) && ((WBM1_CTI_O == 3'b000) || (WBM1_CTI_O == 3'b111) || locked) && !WBM1_LOCK_O) begin
+				selected <= #1 0;
+				locked <= #1 0;
+			end
+		end
+		else if (selected == 3'd3) begin
+			if ((WBS_ACK_O || WBS_ERR_O || locked) && ((WBM2_CTI_O == 3'b000) || (WBM2_CTI_O == 3'b111) || locked) && !WBM2_LOCK_O) begin
 				selected <= #1 0;
 				locked <= #1 0;
 			end
@@ -276,51 +349,65 @@ begin
 end
 
 assign WBS_ADR_I = 
-	(selected == 2'd1 ? WBM0_ADR_O : 
-	(selected == 2'd2 ? WBM1_ADR_O : 
-	0));
+	(selected == 3'd1 ? WBM0_ADR_O : 
+	(selected == 3'd2 ? WBM1_ADR_O : 
+	(selected == 3'd3 ? WBM2_ADR_O : 
+	0)));
 assign WBS_DAT_I_INT = 
-	(selected == 2'd1 ? WBM0_DAT_O_INT : 
-	(selected == 2'd2 ? WBM1_DAT_O_INT : 
-	0));
+	(selected == 3'd1 ? WBM0_DAT_O_INT : 
+	(selected == 3'd2 ? WBM1_DAT_O_INT : 
+	(selected == 3'd3 ? WBM2_DAT_O_INT : 
+	0)));
 assign WBS_SEL_I_INT = 
-	(selected == 2'd1 ? WBM0_SEL_O_INT : 
-	(selected == 2'd2 ? WBM1_SEL_O_INT : 
-	0));
+	(selected == 3'd1 ? WBM0_SEL_O_INT : 
+	(selected == 3'd2 ? WBM1_SEL_O_INT : 
+	(selected == 3'd3 ? WBM2_SEL_O_INT : 
+	0)));
 assign WBS_WE_I = 
-	(selected == 2'd1 ? WBM0_WE_O : 
-	(selected == 2'd2 ? WBM1_WE_O : 
-	0));
+	(selected == 3'd1 ? WBM0_WE_O : 
+	(selected == 3'd2 ? WBM1_WE_O : 
+	(selected == 3'd3 ? WBM2_WE_O : 
+	0)));
 assign WBS_CTI_I = 
-	(selected == 2'd1 ? WBM0_CTI_O : 
-	(selected == 2'd2 ? WBM1_CTI_O : 
-	0));
+	(selected == 3'd1 ? WBM0_CTI_O : 
+	(selected == 3'd2 ? WBM1_CTI_O : 
+	(selected == 3'd3 ? WBM2_CTI_O : 
+	0)));
 assign WBS_BTE_I = 
-	(selected == 2'd1 ? WBM0_BTE_O : 
-	(selected == 2'd2 ? WBM1_BTE_O : 
-	0));
+	(selected == 3'd1 ? WBM0_BTE_O : 
+	(selected == 3'd2 ? WBM1_BTE_O : 
+	(selected == 3'd3 ? WBM2_BTE_O : 
+	0)));
 assign WBS_LOCK_I = 
-	(selected == 2'd1 ? WBM0_LOCK_O : 
-	(selected == 2'd2 ? WBM1_LOCK_O : 
-	0));
+	(selected == 3'd1 ? WBM0_LOCK_O : 
+	(selected == 3'd2 ? WBM1_LOCK_O : 
+	(selected == 3'd3 ? WBM2_LOCK_O : 
+	0)));
 assign WBS_CYC_I = 
-	(selected == 2'd1 ? WBM0_CYC_O : 
-	(selected == 2'd2 ? WBM1_CYC_O : 
-	0));
+	(selected == 3'd1 ? WBM0_CYC_O : 
+	(selected == 3'd2 ? WBM1_CYC_O : 
+	(selected == 3'd3 ? WBM2_CYC_O : 
+	0)));
 assign WBS_STB_I = 
-	(selected == 2'd1 ? WBM0_STB_O : 
-	(selected == 2'd2 ? WBM1_STB_O : 
-	0));
+	(selected == 3'd1 ? WBM0_STB_O : 
+	(selected == 3'd2 ? WBM1_STB_O : 
+	(selected == 3'd3 ? WBM2_STB_O : 
+	0)));
 
 assign WBM0_DAT_I_INT = WBS_DAT_O_INT;
-assign WBM0_ACK_I = (selected == 2'd1 ? WBS_ACK_O : 0);
-assign WBM0_ERR_I = (selected == 2'd1 ? WBS_ERR_O : 0);
-assign WBM0_RTY_I = (selected == 2'd1 ? WBS_RTY_O : 0);
+assign WBM0_ACK_I = (selected == 3'd1 ? WBS_ACK_O : 0);
+assign WBM0_ERR_I = (selected == 3'd1 ? WBS_ERR_O : 0);
+assign WBM0_RTY_I = (selected == 3'd1 ? WBS_RTY_O : 0);
 
 assign WBM1_DAT_I_INT = WBS_DAT_O_INT;
-assign WBM1_ACK_I = (selected == 2'd2 ? WBS_ACK_O : 0);
-assign WBM1_ERR_I = (selected == 2'd2 ? WBS_ERR_O : 0);
-assign WBM1_RTY_I = (selected == 2'd2 ? WBS_RTY_O : 0);
+assign WBM1_ACK_I = (selected == 3'd2 ? WBS_ACK_O : 0);
+assign WBM1_ERR_I = (selected == 3'd2 ? WBS_ERR_O : 0);
+assign WBM1_RTY_I = (selected == 3'd2 ? WBS_RTY_O : 0);
+
+assign WBM2_DAT_I_INT = WBS_DAT_O_INT;
+assign WBM2_ACK_I = (selected == 3'd3 ? WBS_ACK_O : 0);
+assign WBM2_ERR_I = (selected == 3'd3 ? WBS_ERR_O : 0);
+assign WBM2_RTY_I = (selected == 3'd3 ? WBS_RTY_O : 0);
 
 endmodule
 
@@ -330,6 +417,8 @@ endmodule
 `include "../components/gpio/rtl/verilog/tpio.v"
 `include "../components/memory_passthru/rtl/verilog/memory_passthru.v"
 `include "../components/memory_passthru/rtl/verilog/mpassthru.v"
+`include "../components/mstr_passthru/rtl/verilog/mstr_passthru.v"
+`include "../components/mstr_passthru/rtl/verilog/dummy.v"
 
 
 module MyTest ( 
@@ -350,6 +439,21 @@ module MyTest (
 , memory_passthrumem_bte
 , memory_passthrumem_cti
 , memory_passthrumem_lock
+, master_passthrumstr_adr
+, master_passthrumstr_data_to_slv
+, master_passthrumstr_we
+, master_passthrumstr_stb
+, master_passthrumstr_cyc
+, master_passthrumstr_lock
+, master_passthrumstr_cti
+, master_passthrumstr_sel
+, master_passthrumstr_bte
+, master_passthruclk
+, master_passthrurst
+, master_passthrumstr_data_from_slv
+, master_passthrumstr_ack_from_slv
+, master_passthrumstr_rty_from_slv
+, master_passthrumstr_err_from_slv
 );
 input	clk_i, reset_n;
 genvar i;
@@ -437,6 +541,35 @@ output  memory_passthrumem_we;
 output [1:0]  memory_passthrumem_bte;
 output [2:0]  memory_passthrumem_cti;
 output  memory_passthrumem_lock;
+
+wire [31:0] master_passthruM_ADR_O;
+wire [31:0] master_passthruM_DAT_O;
+wire [31:0] master_passthruM_DAT_I;
+wire [3:0] master_passthruM_SEL_O;
+wire   master_passthruM_WE_O;
+wire   master_passthruM_ACK_I;
+wire   master_passthruM_ERR_I;
+wire   master_passthruM_RTY_I;
+wire [2:0] master_passthruM_CTI_O;
+wire [1:0] master_passthruM_BTE_O;
+wire   master_passthruM_LOCK_O;
+wire   master_passthruM_CYC_O;
+wire   master_passthruM_STB_O;
+input [32-1:0] master_passthrumstr_adr;
+input [32-1:0] master_passthrumstr_data_to_slv;
+input  master_passthrumstr_we;
+input  master_passthrumstr_stb;
+input  master_passthrumstr_cyc;
+input  master_passthrumstr_lock;
+input [2:0]  master_passthrumstr_cti;
+input [4-1:0] master_passthrumstr_sel;
+input [1:0]  master_passthrumstr_bte;
+output  master_passthruclk;
+output  master_passthrurst;
+output [32-1:0] master_passthrumstr_data_from_slv;
+output  master_passthrumstr_ack_from_slv;
+output  master_passthrumstr_rty_from_slv;
+output  master_passthrumstr_err_from_slv;
 reg [2:0] counter;
 wire sys_reset = !counter[2];
 always @(posedge clk_i or negedge reset_n)
@@ -453,12 +586,13 @@ wire[2:0] three_zero = 3'b000;
 wire[3:0] four_zero = 4'b0000;
 wire[31:0] thirtytwo_zero = 32'b0000_0000_0000_0000_0000_0000_0000_0000;
 
-arbiter2
+arbiter3
 #(
 .MAX_DAT_WIDTH ( 32 )
 ,.WBS_DAT_WIDTH ( 32 )
 ,.WBM0_DAT_WIDTH ( 32 )
 ,.WBM1_DAT_WIDTH ( 32 )
+,.WBM2_DAT_WIDTH ( 32 )
 )
 arbiter (
 .WBM0_ADR_O(LM32I_ADR_O),
@@ -487,6 +621,19 @@ arbiter (
 .WBM1_LOCK_O(LM32D_LOCK_O),
 .WBM1_CYC_O(LM32D_CYC_O),
 .WBM1_STB_O(LM32D_STB_O),
+.WBM2_ADR_O(master_passthruM_ADR_O),
+.WBM2_DAT_O(master_passthruM_DAT_O[31:0]),
+.WBM2_DAT_I(master_passthruM_DAT_I),
+.WBM2_SEL_O(master_passthruM_SEL_O[3:0]),
+.WBM2_WE_O(master_passthruM_WE_O),
+.WBM2_ACK_I(master_passthruM_ACK_I),
+.WBM2_ERR_I(master_passthruM_ERR_I),
+.WBM2_RTY_I(master_passthruM_RTY_I),
+.WBM2_CTI_O(master_passthruM_CTI_O),
+.WBM2_BTE_O(master_passthruM_BTE_O),
+.WBM2_LOCK_O(master_passthruM_LOCK_O),
+.WBM2_CYC_O(master_passthruM_CYC_O),
+.WBM2_STB_O(master_passthruM_STB_O),
 .WBS_ADR_I(SHAREDBUS_ADR_I[31:0]),
 .WBS_DAT_I(SHAREDBUS_DAT_I[31:0]),
 .WBS_DAT_O(SHAREDBUS_DAT_O[31:0]),
@@ -679,6 +826,42 @@ memory_passthru
 .mem_bte(memory_passthrumem_bte),
 .mem_cti(memory_passthrumem_cti),
 .mem_lock(memory_passthrumem_lock),
+.CLK_I(clk_i), .RST_I(sys_reset));
+
+
+mstr_passthru 
+#(
+.M_WB_DAT_WIDTH(32),
+.M_WB_ADR_WIDTH(32))
+ master_passthru( 
+.M_ADR_O(master_passthruM_ADR_O),
+.M_DAT_O(master_passthruM_DAT_O),
+.M_DAT_I(master_passthruM_DAT_I),
+.M_SEL_O(master_passthruM_SEL_O),
+.M_WE_O(master_passthruM_WE_O),
+.M_ACK_I(master_passthruM_ACK_I),
+.M_ERR_I(master_passthruM_ERR_I),
+.M_RTY_I(master_passthruM_RTY_I),
+.M_CTI_O(master_passthruM_CTI_O),
+.M_BTE_O(master_passthruM_BTE_O),
+.M_LOCK_O(master_passthruM_LOCK_O),
+.M_CYC_O(master_passthruM_CYC_O),
+.M_STB_O(master_passthruM_STB_O),
+.mstr_adr(master_passthrumstr_adr),
+.mstr_data_to_slv(master_passthrumstr_data_to_slv),
+.mstr_we(master_passthrumstr_we),
+.mstr_stb(master_passthrumstr_stb),
+.mstr_cyc(master_passthrumstr_cyc),
+.mstr_lock(master_passthrumstr_lock),
+.mstr_cti(master_passthrumstr_cti),
+.mstr_sel(master_passthrumstr_sel),
+.mstr_bte(master_passthrumstr_bte),
+.clk(master_passthruclk),
+.rst(master_passthrurst),
+.mstr_data_from_slv(master_passthrumstr_data_from_slv),
+.mstr_ack_from_slv(master_passthrumstr_ack_from_slv),
+.mstr_rty_from_slv(master_passthrumstr_rty_from_slv),
+.mstr_err_from_slv(master_passthrumstr_err_from_slv),
 .CLK_I(clk_i), .RST_I(sys_reset));
 
 

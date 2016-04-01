@@ -202,7 +202,7 @@
       </GUIS>
 </Component><Component Access="RW" Device="All" Help="wb_ebr_ctrl\document\onchipram.htm" LatticeFamily="All" Name="wb_ebr_ctrl" PlatformScheme="Shared Bus (Default)" Processor="LM32,LM8,None" Text="On-Chip Memory" Type="Memory" Ver="3.4">
 	<MasterSlavePorts>
-		<SlavePort Name="EBR Port" Prefix="EBR"><Connections><Connection InstanceName="LM32" MasterPort="I" Priority="0"/><Connection InstanceName="LM32" MasterPort="D" Priority="1"/></Connections></SlavePort>
+		<SlavePort Name="EBR Port" Prefix="EBR"><Connections><Connection InstanceName="LM32" MasterPort="I" Priority="0"/><Connection InstanceName="LM32" MasterPort="D" Priority="1"/><Connection InstanceName="master_passthru" MasterPort="M" Priority="2"/></Connections></SlavePort>
 	</MasterSlavePorts>
         <ClockPort Description="Clock one" Name="CLK_I "/>
         <ResetPort Description="Reset" Name="RST_I "/>
@@ -239,7 +239,7 @@
      </GUIS>
 </Component><Component Device="All" Help="gpio\document\gpio.htm" LatticeFamily="All" Name="gpio" PlatformScheme="Shared Bus (Default)" Processor="LM32,LM8,None" Text="GPIO" Type="IO" Ver="3.5">
 	<MasterSlavePorts>
-		<SlavePort Name="GP I/O Port" Prefix="GPIO" Type="DATA,DMAR,DMAW"><Connections><Connection InstanceName="LM32" MasterPort="D" Priority="0"/></Connections></SlavePort>
+		<SlavePort Name="GP I/O Port" Prefix="GPIO" Type="DATA,DMAR,DMAW"><Connections><Connection InstanceName="LM32" MasterPort="D" Priority="0"/><Connection InstanceName="master_passthru" MasterPort="M" Priority="1"/></Connections></SlavePort>
 	</MasterSlavePorts>
 	<ClockPort Description="Clock     one" Name="CLK_I"/>
         <ResetPort Description="Reset" Name="RST_I"/>
@@ -340,7 +340,7 @@
      </GUIS>
 </Component><Component Access="RW" DRCError="true" Device="All" Help="memory_passthru\document\memory_passthrough.htm" LatticeFamily="All" Name="memory_passthru" PlatformScheme="Shared Bus (Default)" Processor="LM32,LM8,None" Text="memory_passthru" Type="Memory" Ver="3.1">
   	<MasterSlavePorts>
-    		<SlavePort ACK="MEM_ACK_O" ADR="MEM_ADR_I" BTE="MEM_BTE_I" CTI="MEM_CTI_I" CYC="MEM_CYC_I" DAT1="MEM_DAT_I" DAT2="MEM_DAT_O" ERR="MEM_ERR_O" LOCK="MEM_LOCK_I" Name="target" Prefix="MEM" RTY="MEM_RTY_O" SEL="MEM_SEL_I" STB="MEM_STB_I" WE="MEM_WE_I"><Connections><Connection InstanceName="LM32" MasterPort="D" Priority="0"/></Connections></SlavePort>
+    		<SlavePort ACK="MEM_ACK_O" ADR="MEM_ADR_I" BTE="MEM_BTE_I" CTI="MEM_CTI_I" CYC="MEM_CYC_I" DAT1="MEM_DAT_I" DAT2="MEM_DAT_O" ERR="MEM_ERR_O" LOCK="MEM_LOCK_I" Name="target" Prefix="MEM" RTY="MEM_RTY_O" SEL="MEM_SEL_I" STB="MEM_STB_I" WE="MEM_WE_I"><Connections><Connection InstanceName="LM32" MasterPort="D" Priority="0"/><Connection InstanceName="master_passthru" MasterPort="M" Priority="1"/></Connections></SlavePort>
   	</MasterSlavePorts>
   	<ClockPort Name="CLK_I" UPort="CLK_I"/>
   	<ResetPort Name="RST_I" UPort="RST_I"/>
@@ -388,5 +388,53 @@
     		<GUI Name="SIZE" Span="1" Widget="Text"/>
 	    	<GUI Columns="2" Span="2" Text="WISHBONE Configuration" Widget="Group"/>
 	    	<GUI Name="WB_DAT_WIDTH" Port="MEM" Span="1" Widget="Combo"/>
+  	</GUIS>
+</Component><Component Access="" DRCError="false" Device="All" Help="mstr_passthru\document\master_passthrough.htm" LatticeFamily="All" Name="mstr_passthru" PlatformScheme="Shared Bus (Default)" Processor="LM32,LM8,None" Text="master_passthru" Type="IO" Ver="3.3">
+	<MasterSlavePorts>
+    		<MasterPort Name="m_port" Prefix="M" Priority="2"/>
+  	</MasterSlavePorts>
+  	<ClockPort Name="CLK_I" UPort="CLK_I"/>
+  	<ResetPort Name="RST_I" UPort="RST_I"/>
+  	<ExternalPorts>
+    		<ExternalPort Name="mstr_adr" Type="input" UPort="mstr_adr" Width="WB_ADR_WIDTH"/>
+    		<ExternalPort Name="mstr_data_to_slv" Type="input" UPort="mstr_data_to_slv" Width="WB_DAT_WIDTH"/>
+    		<ExternalPort Name="mstr_we" Type="input" UPort="mstr_we" Width="1"/>
+    		<ExternalPort Name="mstr_stb" Type="input" UPort="mstr_stb" Width="1"/>
+    		<ExternalPort Name="mstr_cyc" Type="input" UPort="mstr_cyc" Width="1"/>
+    		<ExternalPort Name="mstr_lock" Type="input" UPort="mstr_lock" Width="1"/>
+    		<ExternalPort Name="mstr_cti" Type="input" UPort="mstr_cti" Width="3"/>
+    		<ExternalPort Name="mstr_sel" Type="input" UPort="mstr_sel" Width="WB_SEL_WIDTH"/>
+    		<ExternalPort Name="mstr_bte" Type="input" UPort="mstr_bte" Width="2"/>
+    		<ExternalPort Name="clk" Type="output" UPort="clk" Width="1"/>
+    		<ExternalPort Name="rst" Type="output" UPort="rst" Width="1"/>
+    		<ExternalPort Name="mstr_data_from_slv" Type="output" UPort="mstr_data_from_slv" Width="WB_DAT_WIDTH"/>
+    		<ExternalPort Name="mstr_ack_from_slv" Type="output" UPort="mstr_ack_from_slv" Width="1"/>
+    		<ExternalPort Name="mstr_rty_from_slv" Type="output" UPort="mstr_rty_from_slv" Width="1"/>
+    		<ExternalPort Name="mstr_err_from_slv" Type="output" UPort="mstr_err_from_slv" Width="1"/>
+  	</ExternalPorts>
+  	<Files>
+    		<TopFile Name="dummy"/>
+    		<File Name="../components/mstr_passthru/rtl/verilog/mstr_passthru.v"/>
+    		<File Name="../components/mstr_passthru/rtl/verilog/dummy.v"/>
+  	</Files>
+  	<DeviceDriver InitRoutine="" StructName="">
+    		<DDstruct>
+    		</DDstruct>
+    		<Software>
+    		</Software>
+  	</DeviceDriver>
+  	<Parms>
+    		<Parm Name="InstanceName" Text="Instance Name" Type="string" Value="master_passthru" isiname="true"/>
+    		<Parm Hide="true" Name="BASE_ADDRESS" Text="Base Address" Type="Integer" Value="0x00000000" isba="true"/>
+    		<Parm Enable="true" Hide="true" Name="SIZE" Text="Address Width" Type="Integer" Value="32" issize="true"/>
+    		<Parm Hide="true" Name="DISABLE" Text="Disable" Type="Define" Value="undef" isuse="true"/>
+		<Parm ListValues="8,32" Name="WB_DAT_WIDTH" OType="Integer" Port="M" Text="Data Bus Width" Type="List" Value="32" isparm="true"/>
+		<Parm ListValues="1,4" Name="WB_SEL_WIDTH" OType="Integer" Port="M" Text="Byte Select Bus Width" Type="List" Value="4" isparm="false"/>
+		<Parm Name="WB_ADR_WIDTH" OType="Integer" Port="M" Text="WISHBONE Address Bus Width" Type="Integer" Value="32" isparm="true"/>
+  	</Parms>
+  	<GUIS Columns="2">
+    		<GUI Name="InstanceName" Span="1" Widget="Text"/>
+	    	<GUI Columns="2" Span="2" Text="WISHBONE Configuration" Widget="Group"/>
+	    	<GUI Name="WB_DAT_WIDTH" Port="M" Span="1" Widget="Combo"/>
   	</GUIS>
 </Component></Components></Platform>
