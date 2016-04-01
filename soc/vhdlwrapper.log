@@ -27,6 +27,7 @@ cpu: LM32
 comp: lm32_top
 comp: wb_ebr_ctrl
 comp: gpio
+comp: memory_passthru
 close C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest.msb
 
 open C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest.v
@@ -34,6 +35,21 @@ open C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest.v
 
 list top module port type width bus
 gpioPIO_OUT out 8-1 1
+memory_passthruclk out 1 0
+memory_passthrurst out 1 0
+memory_passthrumem_adr out 32-1 1
+memory_passthrumem_master_data out 32-1 1
+memory_passthrumem_slave_data in 32-1 1
+memory_passthrumem_strb out 1 0
+memory_passthrumem_cyc out 1 0
+memory_passthrumem_ack in 1 0
+memory_passthrumem_err in 1 0
+memory_passthrumem_rty in 1 0
+memory_passthrumem_sel out 3 1
+memory_passthrumem_we out 1 0
+memory_passthrumem_bte out 1 1
+memory_passthrumem_cti out 2 1
+memory_passthrumem_lock out 1 0
 open C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest_vhd.vhd
 close C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest_vhd.vhd
 

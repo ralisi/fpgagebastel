@@ -37,7 +37,7 @@
 //
 //      Project:           MyTest
 //      File:              MyTest.v
-//      Date:              Mi, 11 Mrz 2015 00:48:33 MEZ
+//      Date:              Mi, 8 Apr 2015 02:11:39 MESZ
 //      Version:           2.1
 //      Targeted Family:   All
 //
@@ -328,11 +328,28 @@ endmodule
 `include "../components/wb_ebr_ctrl/rtl/verilog/wb_ebr_ctrl.v"
 `include "../components/gpio/rtl/verilog/gpio.v"
 `include "../components/gpio/rtl/verilog/tpio.v"
+`include "../components/memory_passthru/rtl/verilog/memory_passthru.v"
+`include "../components/memory_passthru/rtl/verilog/mpassthru.v"
 
 
 module MyTest ( 
 	clk_i,reset_n
 , gpioPIO_OUT
+, memory_passthruclk
+, memory_passthrurst
+, memory_passthrumem_adr
+, memory_passthrumem_master_data
+, memory_passthrumem_slave_data
+, memory_passthrumem_strb
+, memory_passthrumem_cyc
+, memory_passthrumem_ack
+, memory_passthrumem_err
+, memory_passthrumem_rty
+, memory_passthrumem_sel
+, memory_passthrumem_we
+, memory_passthrumem_bte
+, memory_passthrumem_cti
+, memory_passthrumem_lock
 );
 input	clk_i, reset_n;
 genvar i;
@@ -399,6 +416,27 @@ wire   gpioGPIO_RTY_O;
 wire gpioGPIO_en;
 wire gpioIRQ_O;
 output [8-1:0] gpioPIO_OUT;
+
+wire [31:0] memory_passthruMEM_DAT_O;
+wire   memory_passthruMEM_ACK_O;
+wire   memory_passthruMEM_ERR_O;
+wire   memory_passthruMEM_RTY_O;
+wire memory_passthruMEM_en;
+output  memory_passthruclk;
+output  memory_passthrurst;
+output [32-1:0] memory_passthrumem_adr;
+output [32-1:0] memory_passthrumem_master_data;
+input [32-1:0] memory_passthrumem_slave_data;
+output  memory_passthrumem_strb;
+output  memory_passthrumem_cyc;
+input  memory_passthrumem_ack;
+input  memory_passthrumem_err;
+input  memory_passthrumem_rty;
+output [3:0]  memory_passthrumem_sel;
+output  memory_passthrumem_we;
+output [1:0]  memory_passthrumem_bte;
+output [2:0]  memory_passthrumem_cti;
+output  memory_passthrumem_lock;
 reg [2:0] counter;
 wire sys_reset = !counter[2];
 always @(posedge clk_i or negedge reset_n)
@@ -467,18 +505,22 @@ arbiter (
 assign SHAREDBUS_DAT_O = 
 ebrEBR_en ? ebrEBR_DAT_O : 
 gpioGPIO_en ? gpioGPIO_DAT_O : 
+memory_passthruMEM_en ? memory_passthruMEM_DAT_O : 
 0;
 assign SHAREDBUS_ERR_O = SHAREDBUS_CYC_I & !(
 (!ebrEBR_ERR_O & ebrEBR_en) | 
 (!gpioGPIO_ERR_O & gpioGPIO_en) | 
+(!memory_passthruMEM_ERR_O & memory_passthruMEM_en) | 
 0);
 assign SHAREDBUS_ACK_O = 
 ebrEBR_en ? ebrEBR_ACK_O : 
 gpioGPIO_en ? gpioGPIO_ACK_O : 
+memory_passthruMEM_en ? memory_passthruMEM_ACK_O : 
 0;
 assign SHAREDBUS_RTY_O = 
 ebrEBR_en ? ebrEBR_RTY_O : 
 gpioGPIO_en ? gpioGPIO_RTY_O : 
+memory_passthruMEM_en ? memory_passthruMEM_RTY_O : 
 0;
 wire [31:0] LM32DEBUG_DAT_I;
 assign LM32DEBUG_DAT_I = 0;
@@ -596,6 +638,47 @@ gpio
 .GPIO_STB_I(SHAREDBUS_STB_I & gpioGPIO_en),
 .PIO_OUT(gpioPIO_OUT),
 .IRQ_O(gpioIRQ_O),
+.CLK_I(clk_i), .RST_I(sys_reset));
+
+
+wire [31:0] memory_passthruMEM_DAT_I;
+assign memory_passthruMEM_DAT_I = SHAREDBUS_DAT_I[31:0];
+wire [3:0] memory_passthruMEM_SEL_I;
+assign memory_passthruMEM_SEL_I = SHAREDBUS_SEL_I;
+assign memory_passthruMEM_en = (SHAREDBUS_ADR_I[31:8] == 24'b000000000000000000010000);
+memory_passthru 
+#(
+.MEM_WB_DAT_WIDTH(32),
+.MEM_WB_ADR_WIDTH(32))
+ memory_passthru( 
+.MEM_ADR_I(SHAREDBUS_ADR_I[31:0]),
+.MEM_DAT_I(memory_passthruMEM_DAT_I[31:0]),
+.MEM_DAT_O(memory_passthruMEM_DAT_O[31:0]),
+.MEM_SEL_I(memory_passthruMEM_SEL_I[3:0]),
+.MEM_WE_I(SHAREDBUS_WE_I),
+.MEM_ACK_O(memory_passthruMEM_ACK_O),
+.MEM_ERR_O(memory_passthruMEM_ERR_O),
+.MEM_RTY_O(memory_passthruMEM_RTY_O),
+.MEM_CTI_I(SHAREDBUS_CTI_I),
+.MEM_BTE_I(SHAREDBUS_BTE_I),
+.MEM_LOCK_I(SHAREDBUS_LOCK_I),
+.MEM_CYC_I(SHAREDBUS_CYC_I & memory_passthruMEM_en),
+.MEM_STB_I(SHAREDBUS_STB_I & memory_passthruMEM_en),
+.clk(memory_passthruclk),
+.rst(memory_passthrurst),
+.mem_adr(memory_passthrumem_adr),
+.mem_master_data(memory_passthrumem_master_data),
+.mem_slave_data(memory_passthrumem_slave_data),
+.mem_strb(memory_passthrumem_strb),
+.mem_cyc(memory_passthrumem_cyc),
+.mem_ack(memory_passthrumem_ack),
+.mem_err(memory_passthrumem_err),
+.mem_rty(memory_passthrumem_rty),
+.mem_sel(memory_passthrumem_sel),
+.mem_we(memory_passthrumem_we),
+.mem_bte(memory_passthrumem_bte),
+.mem_cti(memory_passthrumem_cti),
+.mem_lock(memory_passthrumem_lock),
 .CLK_I(clk_i), .RST_I(sys_reset));
 
 

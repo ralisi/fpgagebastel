@@ -37,7 +37,7 @@
 //
 //      Project:           MyTest
 //      File:              MyTest_inst.v
-//      Date:              Mi, 11 Mrz 2015 00:48:33 MEZ
+//      Date:              Mi, 8 Apr 2015 02:11:39 MESZ
 //      Version:           2.1
 //      Targeted Family:   EC
 //
@@ -49,4 +49,19 @@ MyTest_vhd MyTest_u (
 .clk_i(clk_i),
 .reset_n(reset_n)
 , .gpioPIO_OUT(gpioPIO_OUT) // [8-1:0]
+, .memory_passthruclk(memory_passthruclk) // 
+, .memory_passthrurst(memory_passthrurst) // 
+, .memory_passthrumem_adr(memory_passthrumem_adr) // [32-1:0]
+, .memory_passthrumem_master_data(memory_passthrumem_master_data) // [32-1:0]
+, .memory_passthrumem_slave_data(memory_passthrumem_slave_data) // [32-1:0]
+, .memory_passthrumem_strb(memory_passthrumem_strb) // 
+, .memory_passthrumem_cyc(memory_passthrumem_cyc) // 
+, .memory_passthrumem_ack(memory_passthrumem_ack) // 
+, .memory_passthrumem_err(memory_passthrumem_err) // 
+, .memory_passthrumem_rty(memory_passthrumem_rty) // 
+, .memory_passthrumem_sel(memory_passthrumem_sel) // [3:0] 
+, .memory_passthrumem_we(memory_passthrumem_we) // 
+, .memory_passthrumem_bte(memory_passthrumem_bte) // [1:0] 
+, .memory_passthrumem_cti(memory_passthrumem_cti) // [2:0] 
+, .memory_passthrumem_lock(memory_passthrumem_lock) // 
 );
