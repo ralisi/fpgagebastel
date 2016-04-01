@@ -63,6 +63,8 @@ use ieee.numeric_std.all;
                      next_state := data_clean;
                      
                   when data_write =>
+                     idx := to_integer(unsigned(address));
+                     registers(idx) <= EppDB;
                      next_state := data_clean;
                   
                   when data_clean =>
