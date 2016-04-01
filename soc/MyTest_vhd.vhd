@@ -21,6 +21,21 @@ clk_i   : in std_logic
 ; memory_passthrumem_bte : out std_logic_vector(1 downto 0)
 ; memory_passthrumem_cti : out std_logic_vector(2 downto 0)
 ; memory_passthrumem_lock : out std_logic
+; master_passthrumstr_adr : in std_logic_vector(31 downto 0)
+; master_passthrumstr_data_to_slv : in std_logic_vector(31 downto 0)
+; master_passthrumstr_we : in std_logic
+; master_passthrumstr_stb : in std_logic
+; master_passthrumstr_cyc : in std_logic
+; master_passthrumstr_lock : in std_logic
+; master_passthrumstr_cti : in std_logic_vector(2 downto 0)
+; master_passthrumstr_sel : in std_logic_vector(3 downto 0)
+; master_passthrumstr_bte : in std_logic_vector(1 downto 0)
+; master_passthruclk : out std_logic
+; master_passthrurst : out std_logic
+; master_passthrumstr_data_from_slv : out std_logic_vector(31 downto 0)
+; master_passthrumstr_ack_from_slv : out std_logic
+; master_passthrumstr_rty_from_slv : out std_logic
+; master_passthrumstr_err_from_slv : out std_logic
 );
 end MyTest_vhd;
 
@@ -46,6 +61,21 @@ component MyTest
       ; memory_passthrumem_bte : out std_logic_vector(1 downto 0)
       ; memory_passthrumem_cti : out std_logic_vector(2 downto 0)
       ; memory_passthrumem_lock : out std_logic
+      ; master_passthrumstr_adr : in std_logic_vector(31 downto 0)
+      ; master_passthrumstr_data_to_slv : in std_logic_vector(31 downto 0)
+      ; master_passthrumstr_we : in std_logic
+      ; master_passthrumstr_stb : in std_logic
+      ; master_passthrumstr_cyc : in std_logic
+      ; master_passthrumstr_lock : in std_logic
+      ; master_passthrumstr_cti : in std_logic_vector(2 downto 0)
+      ; master_passthrumstr_sel : in std_logic_vector(3 downto 0)
+      ; master_passthrumstr_bte : in std_logic_vector(1 downto 0)
+      ; master_passthruclk : out std_logic
+      ; master_passthrurst : out std_logic
+      ; master_passthrumstr_data_from_slv : out std_logic_vector(31 downto 0)
+      ; master_passthrumstr_ack_from_slv : out std_logic
+      ; master_passthrumstr_rty_from_slv : out std_logic
+      ; master_passthrumstr_err_from_slv : out std_logic
       );
    end component;
 
@@ -71,6 +101,21 @@ port map (
    ,memory_passthrumem_bte  => memory_passthrumem_bte
    ,memory_passthrumem_cti  => memory_passthrumem_cti
    ,memory_passthrumem_lock  => memory_passthrumem_lock
+   ,master_passthrumstr_adr  => master_passthrumstr_adr
+   ,master_passthrumstr_data_to_slv  => master_passthrumstr_data_to_slv
+   ,master_passthrumstr_we  => master_passthrumstr_we
+   ,master_passthrumstr_stb  => master_passthrumstr_stb
+   ,master_passthrumstr_cyc  => master_passthrumstr_cyc
+   ,master_passthrumstr_lock  => master_passthrumstr_lock
+   ,master_passthrumstr_cti  => master_passthrumstr_cti
+   ,master_passthrumstr_sel  => master_passthrumstr_sel
+   ,master_passthrumstr_bte  => master_passthrumstr_bte
+   ,master_passthruclk  => master_passthruclk
+   ,master_passthrurst  => master_passthrurst
+   ,master_passthrumstr_data_from_slv  => master_passthrumstr_data_from_slv
+   ,master_passthrumstr_ack_from_slv  => master_passthrumstr_ack_from_slv
+   ,master_passthrumstr_rty_from_slv  => master_passthrumstr_rty_from_slv
+   ,master_passthrumstr_err_from_slv  => master_passthrumstr_err_from_slv
    );
 
 end MyTest_vhd_a;

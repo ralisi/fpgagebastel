@@ -28,6 +28,7 @@ comp: lm32_top
 comp: wb_ebr_ctrl
 comp: gpio
 comp: memory_passthru
+comp: mstr_passthru
 close C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest.msb
 
 open C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest.v
@@ -50,6 +51,21 @@ memory_passthrumem_we out 1 0
 memory_passthrumem_bte out 1 1
 memory_passthrumem_cti out 2 1
 memory_passthrumem_lock out 1 0
+master_passthrumstr_adr in 32-1 1
+master_passthrumstr_data_to_slv in 32-1 1
+master_passthrumstr_we in 1 0
+master_passthrumstr_stb in 1 0
+master_passthrumstr_cyc in 1 0
+master_passthrumstr_lock in 1 0
+master_passthrumstr_cti in 2 1
+master_passthrumstr_sel in 4-1 1
+master_passthrumstr_bte in 1 1
+master_passthruclk out 1 0
+master_passthrurst out 1 0
+master_passthrumstr_data_from_slv out 32-1 1
+master_passthrumstr_ack_from_slv out 1 0
+master_passthrumstr_rty_from_slv out 1 0
+master_passthrumstr_err_from_slv out 1 0
 open C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest_vhd.vhd
 close C:/lscc/diamond/3.4_x64/examples/MyTest/soc/MyTest_vhd.vhd
 
